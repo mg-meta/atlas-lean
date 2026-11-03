@@ -1,0 +1,454 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amssymb, amsmath, amsthm}
+\usepackage{mathtools}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+\usepackage{lipsum}
+\usepackage{comment}
+\usepackage{enumitem}
+\usepackage{tikz-cd}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,shadows}
+\usepackage{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{caption}
+
+
+\usepackage{adjustbox}
+\setcounter{MaxMatrixCols}{20}
+
+\usepackage{verbatim}
+
+\newenvironment{myalgorithm}[1][]{%
+  \par\vspace{8pt}
+  \noindent\hrule height.8pt
+  \vspace{4pt}
+  \ifblank{#1}{}{%
+    \captionof{algorithm}{#1}%
+    \vspace{4pt}
+    \noindent\hrule height.4pt
+    \vspace{6pt}
+  }%
+}{%
+  \vspace{6pt}
+  \noindent\hrule height.8pt
+  \par\vspace{8pt}
+}
+
+% ===================================================================
+% 2. flexart
+% ===================================================================
+\usepackage{flexart}
+
+% ===================================================================
+% 3. stylelibrary
+% ===================================================================
+\input{stylelibrary.tex}
+
+% Minimal differences: modest front-matter tightening only.
+\flexset{
+  margintop = 0.5in,
+  marginbottom = 0.5in,
+  marginleft = 0.7in,
+  marginright = 0.7in,
+  parindent = 1.5em,
+  abovetitle = 0pt,
+  belowtitle = 1.2em,
+  aboveabstract = 1.5em,
+  abovesecondary = 16.13pt,
+  thmdefinitionheadfont = {\normalfont\scshape}
+}
+
+% ===================================================================
+% Colors and opacity
+% ===================================================================
+\definecolor{aicolor}{HTML}{038DFC}
+\definecolor{editedaicolor}{HTML}{2B65C6}
+\definecolor{humancolor}{HTML}{22AA22}
+\definecolor{aiassistedcolor}{HTML}{003300}
+\definecolor{defaultcolback}{HTML}{FFFFFF}
+\definecolor{othercolor}{HTML}{7A3E9D}
+\renewcommand{\opacityFrame}{0.5}
+\renewcommand{\opacityText}{0.7}
+
+\newcommand{\HumanLabel}{
+({\bfseries\sffamily\color{humancolor!70}Human})
+}
+\newcommand{\AILabel}{
+({\bfseries\sffamily\color{aicolor!70}AI})
+}
+\newcommand{\EditedAILabel}{
+({\bfseries\sffamily\color{editedaicolor!70}Edited AI})
+}
+\newcommand{\AIAssistedLabel}{
+({\bfseries\sffamily\color{aiassistedcolor!70}AI-assisted})
+}
+\newcommand{\OtherLabel}{
+({\bfseries\sffamily\color{othercolor!70}Other})
+}
+
+% No zero-length \vspace* placeholder above the title block.
+\makeatletter
+\patchcmd{\maketitle}{\vspace*{\fa@abovetitle}}{}{}%
+  {\PackageError{note-template}{Could not remove title top spacer}{Check flexart version.}}
+% Consistent small folios on title/plain and running-head pages.
+\renewcommand{\ps@plain}{%
+  \let\@mkboth\@gobbletwo
+  \let\@oddhead\@empty\let\@evenhead\@empty
+  \def\@oddfoot{\reset@font\small\hfil\thepage\hfil}%
+  \let\@evenfoot\@oddfoot
+}
+\AtBeginDocument{\iffa@header\else\pagestyle{plain}\fi}
+\makeatother
+% Centers of header/folio glyph boxes sit halfway through 0.5in margins.
+\flexset{header=false,headersep=15.53pt}
+\setlength{\footskip}{20.65pt}
+
+% Custom packages
+
+%GAP Code boxes
+\definecolor{codebg}{RGB}{245,245,245}
+\usepackage{listings}
+% 
+\lstdefinelanguage{GAP}{
+  morekeywords={if,then,else,elif,fi,for,do,od,while,local,function,return,rec,Error},
+  sensitive=true,
+  morecomment=[l]{\#},
+  morestring=[b]",
+  morestring=[b]'
+}
+\lstset{
+  language=GAP,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\color{blue}\bfseries, % <- blue differentiators
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{red!60!black},
+  backgroundcolor=\color{codebg},
+  frame=single,
+  framerule=0.4pt,
+  rulecolor=\color{black!5},
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  upquote=true,
+  showstringspaces=false
+}
+
+
+%% Commands
+%%%_____________________________________
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{con}[thm]{Conjecture}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{qst}[thm]{Question}
+\newtheorem{assumption}[thm]{Assumption}
+\newtheorem{rem}[thm]{Remark} 
+\newtheorem{exm}[thm]{Example}
+
+\numberwithin{equation}{section}
+
+
+\font\com=cmtt10
+\def\hb{\hfill\break}
+\def\comment#1{\hb {\com\par\hskip2in \#\#\#\#\#\#\par #1 \par\hskip2in
+\#\#\#\#\#\#}\hb}
+
+
+\date{October 2026}
+
+% ===================================================================
+% Front matter
+% ===================================================================
+\title{Switching reconstruction of oriented graphs}
+% Optional subtitle -- uncomment to use it:
+% \subtitle{An Optional Subtitle}
+
+% Declare each note once with \newfanote; mark authors with \fanote.
+% Keep \fanote outside the {\scshape ...} group.
+%\newfanote{corr}{Corresponding author: \href{mailto:first.author@example.edu}{first.author@example.edu}.}
+%\newfanote{orch}{Orchestrating author.}
+%\newfanote{rev}{Reviewer.}
+\newcommand{\withModel}{\footnotesize with {Muse Spark} and {Watermelon} via {\ttfamily \href{http://meta.ai}{meta.ai}}--TBD}
+\primaryauthors{%
+  {\scshape Milana Golich}%\fanote{corr}
+  %\and 
+  \\
+  %{\scshape Second Author}\\
+  \withModel
+}
+% Secondary authors: two labeled subgroups (see README.md).
+\secondaryauthors{%
+  {\normalfont\footnotesize\itshape Orchestrators}\\*
+  {\scshape Charles Arnal, Vivien Cabannes}\fanote{orch}\\[7.65pt]
+  {\normalfont\footnotesize\itshape Reviewed by}\\*
+  {\scshape }\fanote{rev}
+  %\and
+  {\scshape }\fanote{rev}%
+}
+
+% No \affiliation or \date (see README.md).
+
+% Replace 00A05 with your MSC 2020 codes.
+\subjclass[2020]{00A05}
+
+%\keywords{keyword one, keyword two, keyword three}
+
+%\subjclass[2020]{20D10, 20C15}
+% \affiliation{Department of Typographic Engineering, Example University}
+% \keywords{LaTeX, front matter, sectioning, regression test}
+\flexabstract{%
+We prove the existence of a switching, non-reconstructible digraph on $n \geq 12$ vertices.
+We remark on the use of AI in this research, see Statement of AI Use.
+}
+
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+\begin{humanblock}
+A natural question to ask is to what extent a mathematical object can be recovered by its properties. If a mathematical property uniquely determines the object (up to categorical equivalence), then identifying the object can be reduced to simply computing an invariant. Here we are concerned with this question in the graph theoretic setting, and we refer to such deterministic objects as reconstructible. The graph property that we explore is its "deck", a multi-set of objects formed from the original graph. There are many examples of decks that have been studied. For instance, Kelly and Ulam (\cite{Kelly1957}, \cite{Ulam1960}) investigated the deck consisting of the multi-set of subgraphs each obtained from deleting a single vertex from the original graph. This led to the following conjecture which is referred to as the graph reconstruction conjecture: 
+
+\begin{con}[Kelly, Ulam]
+    Every finite simple graph on at least 3 vertices is reconstructible from its multiset of 1-vertex-deleted subgraphs.
+\end{con}
+
+Similar reconstruction questions to that of Kelly and Ulam were asked for various other kinds of decks. For example, Stanley \cite{Stanley1985} asked an analagous question for graphs with decks that are obtained from a 'switching'. Here Stanley defined the switching of a graph about a vertex to be the switching of edges incident with a vertex into non-edges, and vice-versa. Bondy and Mercier \cite{BondyMercier2011} continued to ask switching reconstruction problems in the setting of directed graphs, or digraphs. The switching in this context refers to switching the orientation of the directed edges incident with a vertex. In \cite{BondyMercier2011}, the authors proved the existence of large sets of digraphs on 4 and 8 vertices that were switching, non-reconstructible. In fact, it was shown that any switching, non-reconstructible digraph must have order divisible by 4, but there were no known examples with $n \geq 12$ vertices. In this exposition, we present an example for $n=12$. We also refer the reader to \cite{McKaySchweitzer2014} for additional background on this topic. 
+
+\section*{Statement of AI Use}
+
+This paper was developed through collaboration between researchers and Watermelon and Muse Spark (AI models) via the \href{http://meta.ai}{meta.ai} chat interface. The model helped explore ideas, develop candidate arguments, and draft material. Researchers guided the work, checked and corrected the mathematics, and take ownership for the final manuscript. Following \cite{schmitt2025extremal}, margin markers identify human-drafted \!\!\HumanLabel and AI-assisted material \!\!\AILabel separately.
+\end{humanblock}
+
+
+\section{Problem Statement}
+For a digraph $D$ and a vertex $v$, we define $\mathrm{switch}(D,v)$ to be the graph obtained by the $\textbf{switching in $D$ about $v$}$ where every edge incident with $v$ is reversed and all other edges remain unchanged. A pair of digraphs $D$ and $H$ have the same switching deck if there exists a bijection $\pi: V(D) \to V(H)$ such that $\mathrm{switch}(D,v) \cong \mathrm{switch}(H,\pi(v))$ for every $v$. We say that a digraph $D$ is \textbf{non-reconstructible} if there exists a digraph $H$, not isomorphic to $D$, that has the same switching deck as $D$.
+
+The following question was posed in \cite{BondyMercier2011}: 
+
+\subsection*{QUESTION} Does there exist a switching, non-reconstructible digraph on twelve or more vertices? 
+
+\section{Solution}
+We exhibit a switching, non-reconstructible oriented graph on $n=12$ vertices. That is, we present a pair of non-isomorphic oriented graphs $D$ and $H$ on 12 vertices that have the same switching deck. 
+
+We recall that an \textbf{oriented graph} is a digraph with no loops and no symmetric pairs of edges. That is, for an $n$-vertex oriented graph, its associated $n \times n$ signed adjacency matrix $A$ is skew-symmetric $A^T = -A$ with entries $A_{ij} \in \{-1, 0, 1\}$ and $A_{ii} = 0$. For $i \neq j$, $A_{ij} = 0$ if there exists no edge between vertices $v_i$ and $v_j$.
+
+\subsection*{ORIENTED GRAPHS $D$ and $H$} 
+We define $D$ to be the oriented graph of order 12 with vertices $V = \{v_0,v_1,v_2,...,v_{11}\}$ and skew-symmetric signed adjacency
+matrix $A$:
+
+\begin{center}
+\setlength{\arraycolsep}{2.5pt} % shrink col padding, default 5pt
+\renewcommand{\arraystretch}{0.9} % shrink row height
+\begin{adjustbox}{max width=1.5\textwidth,center}
+$\displaystyle
+A= [A_{ij}] =
+\begin{pmatrix}
+ 0&-1&-1& 0&-1& 1&-1& 1& 1&-1& 1&-1\\
+ 1& 0& 1&-1& 0&-1& 1&-1&-1& 1&-1& 1\\
+ 1&-1& 0&-1&-1& 0& 1&-1&-1& 1&-1& 1\\
+ 0& 1& 1& 0& 1&-1&-1& 1& 1&-1& 1&-1\\
+ 1& 0& 1&-1& 0&-1&-1& 1& 1&-1& 1&-1\\
+-1& 1& 0& 1& 1& 0& 1&-1&-1& 1&-1& 1\\
+ 1&-1&-1& 1& 1&-1& 0&-1& 1& 0&-1&-1\\
+-1& 1& 1&-1&-1& 1& 1& 0& 1& 1& 0&-1\\
+-1& 1& 1&-1&-1& 1&-1&-1& 0&-1&-1& 0\\
+ 1&-1&-1& 1& 1&-1& 0&-1& 1& 0&-1&-1\\
+-1& 1& 1&-1&-1& 1& 1& 0& 1& 1& 0&-1\\
+ 1&-1&-1& 1& 1&-1& 1& 1& 0& 1& 1& 0
+\end{pmatrix}
+$
+\end{adjustbox}
+\end{center}
+
+We can see from the above matrix that the only non-adjacent, distinct vertices $v_i$ and $v_j$ in $D$ are given by the following six pairs: 
+\[
+(i,j) = \{(0,3), (1,4), (2,5), (6,9), (7,10), (8,11)\}.
+\]
+Equivalently, we can derive the directed edges of $D$ from $A$ as the following:
+\begin{align*}
+0&\to\{5,7,8,10\}, &1&\to\{0,2,6,9,11\}, &2&\to\{0,6,9,11\},\\
+3&\to\{1,2,4,7,8,10\}, &4&\to\{0,2,7,8,10\}, &5&\to\{1,3,4,6,9,11\},\\
+6&\to\{0,3,4,8\}, &7&\to\{1,2,5,6,8,9\}, &8&\to\{1,2,5\},\\
+9&\to\{0,3,4,8\}, &10&\to\{1,2,5,6,8,9\}, &11&\to\{0,3,4,6,7,9,10\}.
+\end{align*}
+
+Next, we obtain an oriented graph $H$ by switching the oriented graph $D$ at the vertices $v_0$ and $v_1$. By definition, this means that $H$ is represented by the skew-symmetric signed adjacency matrix $C$ given by 
+\[
+C=[C_{ij}],\quad 
+C_{ij}=
+\begin{cases}
+-A_{ij} & \text{if exactly one of } i,j\in\{0,1\},\\
+A_{ij} & \text{otherwise.}
+\end{cases}
+\]
+
+This gives the following matrix representation of $H$: 
+
+\begin{center}
+\setlength{\arraycolsep}{2.5pt}
+\renewcommand{\arraystretch}{0.9}
+\setcounter{MaxMatrixCols}{20}
+\begin{adjustbox}{max width=0.95\textwidth,center}
+$\displaystyle
+C=[C_{ij}]=
+\begin{pmatrix}
+ 0&-1& 1& 0& 1&-1& 1&-1&-1& 1&-1& 1\\
+ 1& 0&-1& 1& 0& 1&-1& 1& 1&-1& 1&-1\\
+-1& 1& 0&-1&-1& 0& 1&-1&-1& 1&-1& 1\\
+ 0&-1& 1& 0& 1&-1&-1& 1& 1&-1& 1&-1\\
+-1& 0& 1&-1& 0&-1&-1& 1& 1&-1& 1&-1\\
+ 1&-1& 0& 1& 1& 0& 1&-1&-1& 1&-1& 1\\
+-1& 1&-1& 1& 1&-1& 0&-1& 1& 0&-1&-1\\
+ 1&-1& 1&-1&-1& 1& 1& 0& 1& 1& 0&-1\\
+ 1&-1& 1&-1&-1& 1&-1&-1& 0&-1&-1& 0\\
+-1& 1&-1& 1& 1&-1& 0&-1& 1& 0&-1&-1\\
+ 1&-1& 1&-1&-1& 1& 1& 0& 1& 1& 0&-1\\
+-1& 1&-1& 1& 1&-1& 1& 1& 0& 1& 1& 0
+\end{pmatrix}
+$
+\end{adjustbox}
+\end{center}
+\subsection*{SAME SWITCHING DECK}
+For simplicity, we refer to the vertice $v_i$, or merely $v$, as $i$. Based on the derivation of $H$, we naturally define the bijection $\pi: V(D) \to V(H)$ to be the permutation 
+ $\pi = (0\,1)(2\,5)(3\,4)(6\,7)(8\,11)(9\,10)$. This gives  
+\[
+\pi(V) = \{\pi(0), \pi(1), \pi(2), ... , \pi(11) \} = \{1,0,5,4,3,2,7,6,11,10,9,8\}.
+\]
+
+Under $\pi$, we consider the signed adjacency matrices of $\mathrm{switch}(D,v)$ and $\mathrm{switch}(H,\pi(v))$ for each $v \in V$, which we will denote by $D_v$ and $H_{\pi(v)}$ respectively. First, we note that the switching in $D$ about $v$ results in multiplying the signed adjacency matrix $A$ by $-1$ in the row and column corresponding to $v$. Equivalently, this corresponds to the following matrix multiplication: 
+
+\[ D_v = S_vAS_v \quad  \text{where} \quad S_v = \operatorname{diag}(s_0,\dots,s_{11}),\]
+
+\[ 
+s_i=\begin{cases}-1 & i=v\\ 1 & i\neq v\end{cases}
+=
+\begin{pmatrix}
+1 &  &  &  &  \\
+ & \ddots &  &  &  \\
+ &  & \underset{\text{position }v}{-1} &  &  \\
+ &  &  & \ddots &  \\
+ &  &  &  & 1
+\end{pmatrix}_{12\times12}
+\]
+
+Thus given that $H$ was obtained from switching $D$ about the vertices $v_0$ and $v_1$, we can realize the signed adjacency matrix $C$ as the multiplication of $A$ by two switching matrices $S_0$ and $S_1$ as follows: 
+
+\[ C = S_{01}AS_{01}, \quad S_{01} = S_0S_1\] 
+
+Furthermore, we can realize $D_v$ and $H_{\pi(v)}$ at $v=0$ as the following: 
+
+\[ D_0 = S_0AS_0 = S_1S_{01}AS_{01}S_1 = S_1CS_1 = H_1 = H_{\pi(0)}.\] 
+
+Hence for the switching at $v=0$, we act on $D_0$ by conjugation of the identity permutation matrix $P_0$ which represents the trivial action on the vertices $V$:
+
+\[ P_0^TD_0P_0 = H_1\]
+
+In this way, we naturally define the bijection $\psi_v: V(\mathrm{switch}(D,v))\to V(\mathrm{switch}(H,\pi(v)))$ to be the permutation which induces the conjugation action on $D_v$ by the respective permutation matrices for each $v$: 
+
+\[ \Psi_v = P_{\psi(v)}^TD_vP_{\psi(v)} = H_{\pi(v)}\]
+
+In other words, $P_{\psi_v}$ is the matrix representation of $\psi_v$. For convenience, we will write the permutation $\psi_v$ of $V$ as the list $[\psi_v(0),\dots,\psi_v(11)]$. For each switching of $D$ and $H$ under $\pi$, we may continue this computational exercise to derive $\psi_v$ for each $v$:
+
+
+\begin{center}
+\begin{tabular}{ccl}
+$v$ & $\pi(v)$ & $\psi_v$ \\ \hline
+0 & 1 & $[0,1,2,3,4,5,6,7,8,9,10,11]$\\
+1 & 0 & $[3,4,5,0,1,2,6,7,8,9,10,11]$\\
+2 & 5 & $[1,2,3,4,5,0,6,7,8,9,10,11]$\\
+3 & 4 & $[3,4,5,0,1,2,6,7,8,9,10,11]$\\
+4 & 3 & $[4,5,0,1,2,3,6,7,8,9,10,11]$\\
+5 & 2 & $[4,5,0,1,2,3,6,7,8,9,10,11]$\\
+6 & 7 & $[2,3,4,5,0,1,11,6,7,8,9,10]$\\
+7 & 6 & $[2,3,4,5,0,1,7,8,9,10,11,6]$\\
+8 &11 & $[2,3,4,5,0,1,11,6,7,8,9,10]$\\
+9 &10 & $[2,3,4,5,0,1,8,9,10,11,6,7]$\\
+10& 9 & $[2,3,4,5,0,1,10,11,6,7,8,9]$\\
+11& 8 & $[2,3,4,5,0,1,10,11,6,7,8,9]$\\
+\end{tabular}
+\end{center}
+
+\begin{claim}
+
+In terms of the corresponding adjacency matrices, we have for every $v$ and all $i,j$ that
+\[
+[D_v]_{ij} = [H_{\pi(v)}]_{\psi_v(i),\psi_v(j)}.
+\]
+
+By definition, this implies that $\psi_v$ is an isomorphism between the oriented graphs
+$\mathrm{switch}(D,v)$ and $\mathrm{switch}(H,\pi(v))$ for each $v$. Equivalently, $\Psi_v: D_v \to H_{\pi(v)}$ is an isomorphism for each $v$.
+\end{claim}
+
+
+\subsection*{D IS NOT ISOMORPHIC TO H}
+For $v\in V$, the out-degree of $v$ is given by
+\[
+\text{outdeg}(v)=|\{w: v\to w\} |,
+\]
+where $w$ is a vertice of $V$. By definition, this equals the number of $+1$'s in row $v$ of $A$. Alternatively, the in-degree of $v$ is given by 
+\[\text{indeg}(v)=|\{u: u\to v\}|\]
+and equals the number of $-1$'s in row $v$ of $A$. It follows that if there exists a graph isomorphism $\varphi: D \to H$, then $\text{outdeg}_D(v) = \text{outdeg}_H(\varphi(v))$ and $\text{indeg}_D(v) = \text{indeg}_H(\varphi(v))$ for every $v \in V$. 
+
+For an oriented graph $G$ and $v \in V$, we define $P_{G}(v)$ to be 
+\[
+P_{G}(v)=(z_1,z_2,z_3),\quad
+\begin{cases}
+z_1 = \mathrm{outdeg}(v),\\
+z_2 = \text{sorted list of }\mathrm{outdeg}(y)\text{ over }y\in N^+(v),\\
+z_3 = \text{sorted list of }\mathrm{outdeg}(z)\text{ over }z\in N^-(v).
+\end{cases}
+\]
+Given that an isomorphism preserves outdegrees of vertices and of their neighbours, the multiset $\{P_G(v):v\in V\}$ would be invariant. We thus continue by computing $P_D(v)$ explicitly for $v=0$. 
+
+A straightforward computation on the first row of $A$ corresponding to vertex $v_0$ gives $\text{outdeg}_D(0) = 4$ with directed edges $0\to\{5,7,8,10\}$. 
+The out-neighbours $\{5,7,8,10\}$ then have out-degrees
+$(6,6,3,6)$ and the in-neighbours $\{1,2,4,6,9,11\}$ have outdegrees
+$(5,4,5,4,4,7)$. This yields
+\[
+P_D(0) = (4,\,(3,6,6,6),\,(4,4,4,5,5,7)).
+\]
+
+Next, by a direct check from the matrix $C$, we have that the vertices of $H$ with
+outdegree $4$ are exactly $2,4,6,9$ with 
+\begin{align*}
+P_H(2) &= (4,\,(4,4,6,7),\,(3,4,5,5,6,6)),\\
+P_H(4) &= (4,\,(3,4,6,6),\,(4,4,5,5,6,7)),\\
+P_H(6) &= (4,\,(3,4,5,6),\,(4,5,6,6,6,7)),\\
+P_H(9) &= (4,\,(3,4,5,6),\,(4,5,6,6,6,7)).
+\end{align*}
+For example, we derive the $P_H(2)$ above since vertex $2$ in $H$ has out-neighbours $\{1,6,9,11\}$ with respective out-degrees $(6,4,4,7)$, and in-neighbours $\{0,3,4,7,8,10\}$ with respective out-degrees $(5,5,4,6,3,6)$. However, this means that $P_D(0) \neq P_H(v)$ for $v = 2,4,6,9$. Therefore, we conclude that $D$ and $H$ are not isomorphic. 
+
+\subsection*{CONCLUSION}
+We have shown the existence of a pair of oriented graphs $D$ and $H$ with $n=12$ vertices that have the same switching deck, but
+are not isomorphic. This proves the existence of switching, non-reconstructible oriented graphs on twelve vertices. 
+
+\section*{FURTHER QUESTIONS}
+
+\begin{humanblock}
+To motivate further study on this topic, we conclude with the following questions of interest:
+
+\textbf{Q1:} Under what conditions determine whether a digraph is switching, non-reconstructible?
+
+In \cite{McKaySchweitzer2014}, the authors performed an exhaustive search on all 12-vertex tournaments, all orientations of graphs with maximum degree at most 3, and all orientations of quartic graphs, and found them all to be determined by their switching decks. Additionally, Figure 12 in \cite{McKaySchweitzer2014} provides an explicit example of a pair of digraphs on 12 vertices that are determined by their switching deck, but the digraphs contain 2-cycles and are not oriented graphs. This leads to the following question: \\
+
+\textbf{Q2:} Are switching, non-reconstructible digraphs restricted to $n$-vertex oriented graphs for $n \geq 12$? If so, what kinds of oriented graphs can admit this property and for what values of $n$?
+\end{humanblock}
+
+
+%==================== Bibliography ====================
+% \printbibliography
+\bibliographystyle{alpha}
+\bibliography{bib.bib}
+
+\end{document}

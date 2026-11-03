@@ -1,0 +1,356 @@
+% Candidate 1: Note template, awaiting approval.
+
+\documentclass[11pt]{article}
+
+% ===================================================================
+% 1. Packages (before flexart)
+% ===================================================================
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+
+% ===================================================================
+% 2. flexart
+% ===================================================================
+\usepackage{flexart}
+
+% ===================================================================
+% 3. stylelibrary
+% ===================================================================
+\input{stylelibrary.tex}
+
+% Minimal differences: modest front-matter tightening only.
+\flexset{
+  margintop = 0.5in,
+  marginbottom = 0.5in,
+  marginleft = 0.7in,
+  marginright = 0.7in,
+  parindent = 1.5em,
+  abovetitle = 0pt,
+  belowtitle = 1.2em,
+  aboveabstract = 1.5em,
+  abovesecondary = 16.13pt,
+  thmdefinitionheadfont = {\normalfont\scshape}
+}
+
+% ===================================================================
+% Colors and opacity
+% ===================================================================
+\definecolor{aicolor}{HTML}{038DFC}
+\definecolor{editedaicolor}{HTML}{2B65C6}
+\definecolor{humancolor}{HTML}{22AA22}
+\definecolor{aiassistedcolor}{HTML}{003300}
+\definecolor{defaultcolback}{HTML}{FFFFFF}
+\definecolor{othercolor}{HTML}{7A3E9D}
+\renewcommand{\opacityFrame}{0.5}
+\renewcommand{\opacityText}{0.7}
+
+\newcommand{\HumanLabel}{
+({\bfseries\sffamily\color{humancolor!70}Human})
+}
+\newcommand{\AILabel}{
+({\bfseries\sffamily\color{aicolor!70}AI})
+}
+\newcommand{\EditedAILabel}{
+({\bfseries\sffamily\color{editedaicolor!70}Edited AI})
+}
+\newcommand{\AIAssistedLabel}{
+({\bfseries\sffamily\color{aiassistedcolor!70}AI-assisted})
+}
+\newcommand{\OtherLabel}{
+({\bfseries\sffamily\color{othercolor!70}Other})
+}
+
+% No zero-length \vspace* placeholder above the title block.
+\makeatletter
+\patchcmd{\maketitle}{\vspace*{\fa@abovetitle}}{}{}%
+  {\PackageError{note-template}{Could not remove title top spacer}{Check flexart version.}}
+% Consistent small folios on title/plain and running-head pages.
+\renewcommand{\ps@plain}{%
+  \let\@mkboth\@gobbletwo
+  \let\@oddhead\@empty\let\@evenhead\@empty
+  \def\@oddfoot{\reset@font\small\hfil\thepage\hfil}%
+  \let\@evenfoot\@oddfoot
+}
+\AtBeginDocument{\iffa@header\else\pagestyle{plain}\fi}
+\makeatother
+% Centers of header/folio glyph boxes sit halfway through 0.5in margins.
+\flexset{header=false,headersep=15.53pt}
+\setlength{\footskip}{20.65pt}
+
+% ===================================================================
+% 4. hyperref (last)
+% ===================================================================
+\usepackage{hyperref}
+
+% ===================================================================
+% Theorems
+% ===================================================================
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[section]
+
+% ===================================================================
+% Custom macros
+% ===================================================================
+
+% Add custom macros here.
+
+
+% ===================================================================
+% Custom environments
+% ===================================================================
+
+% Add custom environments here.
+
+
+% ===================================================================
+% Front matter
+% ===================================================================
+\title[Short Title for the Running Head]{A Descriptive Title for Your Note}
+% Optional subtitle -- uncomment to use it:
+% \subtitle{An Optional Subtitle}
+
+% Declare each note once with \newfanote; mark authors with \fanote.
+% Keep \fanote outside the {\scshape ...} group.
+\newfanote{corr}{Corresponding author: \href{mailto:first.author@example.edu}{first.author@example.edu}.}
+\newfanote{orch}{Orchestrating author.}
+\newfanote{rev}{Reviewer.}
+\newcommand{\withModel}{\footnotesize with {Muse Spark} and {Watermelon} via {\ttfamily \href{http://meta.ai}{meta.ai}}--TBD}
+\primaryauthors{%
+  {\scshape First Author}\fanote{corr}
+  \and
+  {\scshape Second Author}\\
+  \withModel
+}
+% Secondary authors: two labeled subgroups (see README.md).
+\secondaryauthors{%
+  {\normalfont\footnotesize\itshape Orchestrator}\\*
+  {\scshape First Orchestrator}\fanote{orch}\\[7.65pt]
+  {\normalfont\footnotesize\itshape Reviewed by}\\*
+  {\scshape First Secondary}\fanote{rev}
+  \and
+  {\scshape Second Secondary}\fanote{rev}%
+}
+
+% No \affiliation or \date (see README.md).
+
+% Replace 00A05 with your MSC 2020 codes.
+\subjclass[2020]{00A05}
+
+\keywords{keyword one, keyword two, keyword three}
+
+\flexabstract{%
+  A short abstract. Every passage of the paper is labelled by provenance:
+  text written by a human, text generated by AI, AI text edited by a human,
+  human text written with AI assistance, or anything else. The labels live
+  in the left margin of the boxes in Section~\ref{sec:provenance}, so a
+  reader can see at a glance who -- or what -- wrote each passage.
+  We remark on the use of AI in this research, see Statement of AI use.
+}
+
+\begin{document}
+
+\maketitle
+
+
+% ===================================================================
+\section{Introduction}
+% ===================================================================
+
+This is the first paragraph after the front matter. Replace it with your
+own introduction. Within a paragraph you can underline a
+\humanul{human-written phrase} or an \aiul{AI-generated phrase} to mark
+provenance inline, without a box.
+
+A normal footnote works as usual.\footnote{A normal footnote.} For
+background, see~\cite{example2024}.
+
+% ===================================================================
+\section*{Statement of AI Use}
+% ===================================================================
+
+\begin{humanblock}
+This paper was developed through collaboration between researchers and Muse Spark (AI model) via the \href{http://meta.ai}{meta.ai} chat interface. The model helped explore ideas, develop candidate arguments, and draft material. Researchers guided the work, checked and corrected the mathematics, and take ownership for the final manuscript. Following \cite{schmitt2025extremal}, margin markers identify human-drafted \!\!\HumanLabel and AI-assisted material \!\!\AILabel separately.
+\end{humanblock}
+
+% ===================================================================
+\section*{Concurrent Work}
+% ===================================================================
+
+\begin{humanblock}
+We are not aware of any concurrent work on this topic.
+\end{humanblock}
+
+% ===================================================================
+\section{Labelling provenance}
+% ===================================================================
+\label{sec:provenance}
+
+Every passage in the paper goes in one of the boxes below. The label is
+printed vertically in the left margin. Boxes are breakable across pages.
+Do not nest boxes.
+
+% ===================================================================
+% Human
+% ===================================================================
+\begin{humanblock}
+This passage was written entirely by a human, with no AI involvement.
+
+A second paragraph inside the same box. Paragraphs inside a box are
+indented, like the body text.
+\end{humanblock}
+
+% ===================================================================
+% AI
+% ===================================================================
+\begin{aiblock}
+This passage was generated by AI and is reproduced verbatim, without
+human editing.
+\end{aiblock}
+
+% ===================================================================
+% Edited AI
+% ===================================================================
+\begin{editedaiblock}
+This passage started as an AI-generated draft and was then edited by a
+human. Say what changed, if it matters:
+\begin{itemize}
+  \item corrected the statement of the main result;
+  \item rewrote the proof for clarity;
+  \item checked every computation.
+\end{itemize}
+\end{editedaiblock}
+
+% ===================================================================
+% Human, AI-assisted
+% ===================================================================
+\begin{aiassistedblock}
+This passage was written by a human with AI assistance -- for example,
+the human drafted it and used AI for rephrasing, or asked AI for
+suggestions and then wrote the final text themselves. The
+\humanul{inline underline commands} also work inside boxes.
+\end{aiassistedblock}
+
+% ===================================================================
+% Other
+% ===================================================================
+% Generic box: [options]{color}{label}.
+\begin{labeledblock}{othercolor}{Other}
+This passage belongs to another category -- a quotation, a passage
+translated from another language, a transcription, or whatever your
+project needs to mark. Define a color for the category (see
+\texttt{\textbackslash definecolor\{othercolor\}} in the preamble) and
+give it a short label.
+\end{labeledblock}
+
+
+% ===================================================================
+\section{Results}
+% ===================================================================
+
+\subsection{Theorems, proofs and display mathematics}
+
+Theorems are declared exactly as with \texttt{amsthm}; flexart restyles
+the plain, definition and remark styles~\cite{flexart2026}.
+
+\begin{theorem}
+\label{thm:main}
+Every labelled passage has exactly one provenance.
+\end{theorem}
+
+\begin{proof}
+By construction, each passage sits in exactly one box.
+\end{proof}
+
+\begin{definition}
+\label{def:provenance}
+The \emph{provenance} of a passage is the account of who or what wrote it.
+\end{definition}
+
+\begin{remark}
+Remarks, lemmas and definitions share the theorem counter within each
+section.
+\end{remark}
+
+Display mathematics uses the usual environments. A display that opens a
+paragraph is handled by flexart's spacing:
+\[
+  1 + 1 = 2.
+\]
+Numbered equations take a label and are cited with \verb|\eqref|:
+\begin{equation}
+  \label{eq:half}
+  \frac{1}{2} + \frac{1}{2} = 1.
+\end{equation}
+Equation~\eqref{eq:half} is the whole proof in miniature.
+
+\subsection{Figures and tables}
+
+Figure~\ref{fig:placeholder} and Table~\ref{tab:example} are placeholders:
+replace the rule in the figure with \verb|\includegraphics{...}| and the
+table rows with your data.
+
+\begin{figure}[htbp]
+  \centering
+  \rule{0.7\textwidth}{0.25\textheight} % placeholder for \includegraphics
+  \caption{A placeholder figure.}
+  \label{fig:placeholder}
+\end{figure}
+
+\begin{table}[htbp]
+  \centering
+  \caption{An example table.}
+  \label{tab:example}
+  \begin{tabular}{lcc}
+    \toprule
+    Category & Color & Box \\
+    \midrule
+    Human & green & \texttt{humanblock} \\
+    AI & blue & \texttt{aiblock} \\
+    Edited AI & dark blue & \texttt{editedaiblock} \\
+    Human: AI-assisted & dark green & \texttt{aiassistedblock} \\
+    Other & purple & \texttt{labeledblock} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Lists work as usual; flexart's list keys control their spacing:
+\begin{enumerate}
+  \item First item.
+  \item Second item. A paragraph inside the item.
+\end{enumerate}
+
+% ===================================================================
+\section{Discussion}
+% ===================================================================
+
+\subsection{A run-in subsection}
+This heading runs into the paragraph and ends with a period
+(flexart's default for subsections).
+
+\subsubsection{Italic run-in}
+Level three, in italic.
+
+\paragraph{Paragraph head.} Level four.
+
+% ===================================================================
+% Appendix
+% ===================================================================
+\appendix
+\section{Supplementary material}
+
+Appendix content goes here.
+
+% ===================================================================
+% References
+% ===================================================================
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}

@@ -1,0 +1,36 @@
+{
+  "challenge_module": "switching_reconstruction_comparator",
+  "solution_module": "SwitchingReconstruction",
+  "theorem_names": [
+    "SwitchingReconstruction.matD_isOrientedMat",
+    "SwitchingReconstruction.matH_eq_matC",
+    "SwitchingReconstruction.matH_isOrientedMat",
+    "SwitchingReconstruction.sameSwitchingDeck_matD_matH",
+    "SwitchingReconstruction.degreeProfile_matD_zero",
+    "SwitchingReconstruction.matD_not_iso_matH",
+    "SwitchingReconstruction.switching_nonreconstructible_matD",
+    "SwitchingReconstruction.switchingQuestion12",
+    "SwitchingReconstruction.exists_switching_nonreconstructible_ge_twelve"
+  ],
+  "definition_names": [
+    "SwitchingReconstruction.IsOrientedMat",
+    "SwitchingReconstruction.switchSign",
+    "SwitchingReconstruction.switchMat",
+    "SwitchingReconstruction.permMat",
+    "SwitchingReconstruction.MatIso",
+    "SwitchingReconstruction.SameSwitchingDeck",
+    "SwitchingReconstruction.IsSwitchingNonReconstructible",
+    "SwitchingReconstruction.outdeg",
+    "SwitchingReconstruction.degreeProfile",
+    "SwitchingReconstruction.SwitchingQuestion12",
+    "SwitchingReconstruction.SwitchingQuestion",
+    "SwitchingReconstruction.matD",
+    "SwitchingReconstruction.matH",
+    "SwitchingReconstruction.matC"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ]
+}

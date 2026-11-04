@@ -70,6 +70,7 @@
 \definecolor{aiassistedcolor}{HTML}{003300}
 \definecolor{defaultcolback}{HTML}{FFFFFF}
 \definecolor{othercolor}{HTML}{7A3E9D}
+\definecolor{collabcolor}{HTML}{129B8F}
 \renewcommand{\opacityFrame}{0.5}
 \renewcommand{\opacityText}{0.7}
 
@@ -79,6 +80,8 @@
 \newcommand{\AILabel}{
 ({\bfseries\sffamily\color{aicolor!70}AI})
 }
+\newcommand{\CollabLabel}{%
+\textcolor{collabcolor}{(Human + AI)}}
 \newcommand{\EditedAILabel}{
 ({\bfseries\sffamily\color{editedaicolor!70}Edited AI})
 }
@@ -87,6 +90,26 @@
 }
 \newcommand{\OtherLabel}{
 ({\bfseries\sffamily\color{othercolor!70}Other})
+}
+
+% Human + AI sidebar, as in Ruel_Anderson_Second_Derivatve.tex and
+% Uniform_Real_Zero_Bounds_Constant.tex (Temp_Packages): same
+% linemargin/enhancebreak mechanism as humanblock in stylelibrary.tex,
+% teal frame with vertical "Human + AI" label.
+\newtcolorbox{collabblock}[1][]{
+    colframe=collabcolor, opacityframe=\opacityFrame,
+    enhancebreak, alignoptions, linemargin,
+    colback=white,
+    overlay={
+    \node[
+    collabcolor, font=\tiny\bfseries\sffamily,
+    rotate=90, anchor=east, align=right,
+    text opacity=\opacityText
+      ]
+      at ([xshift=-\marginsep-\framelinewidth/2,
+      yshift=3pt]frame.north west) {Human + AI};
+    }, footnoteformat,
+    #1
 }
 
 % No zero-length \vspace* placeholder above the title block.
@@ -153,6 +176,10 @@
 \newtheorem{assumption}[thm]{Assumption}
 \newtheorem{rem}[thm]{Remark} 
 \newtheorem{exm}[thm]{Example}
+% `claim' is used in the Solution (the switching-deck identity) but was
+% never declared; without this the environment is ignored outside a box
+% and breaks tcolorbox capture inside the collabblock.
+\newtheorem{claim}[thm]{Claim}
 
 \numberwithin{equation}{section}
 
@@ -227,11 +254,12 @@ Similar reconstruction questions to that of Kelly and Ulam were asked for variou
 
 \section*{Statement of AI Use}
 
-This paper was developed through collaboration between researchers and Watermelon and Muse Spark (AI models) via the \href{http://meta.ai}{meta.ai} chat interface. The model helped explore ideas, develop candidate arguments, and draft material. Researchers guided the work, checked and corrected the mathematics, and take ownership for the final manuscript. Following \cite{schmitt2025extremal}, margin markers identify human-drafted \!\!\HumanLabel and AI-assisted material \!\!\AILabel separately.
+This paper was developed through collaboration between researchers and Watermelon and Muse Spark (AI models) via the \href{http://meta.ai}{meta.ai} chat interface. The model helped explore ideas, develop candidate arguments, and draft material. Researchers guided the work, checked and corrected the mathematics, and take ownership for the final manuscript. Following \cite{schmitt2025extremal}, margin markers identify human-drafted \!\!\HumanLabel, joint \!\!\CollabLabel, and AI-assisted material \!\!\AILabel separately.
 \end{humanblock}
 
 
 \section{Problem Statement}
+\begin{collabblock}
 For a digraph $D$ and a vertex $v$, we define $\mathrm{switch}(D,v)$ to be the graph obtained by the $\textbf{switching in $D$ about $v$}$ where every edge incident with $v$ is reversed and all other edges remain unchanged. A pair of digraphs $D$ and $H$ have the same switching deck if there exists a bijection $\pi: V(D) \to V(H)$ such that $\mathrm{switch}(D,v) \cong \mathrm{switch}(H,\pi(v))$ for every $v$. We say that a digraph $D$ is \textbf{non-reconstructible} if there exists a digraph $H$, not isomorphic to $D$, that has the same switching deck as $D$.
 
 The following question was posed in \cite{BondyMercier2011}: 
@@ -431,7 +459,8 @@ For example, we derive the $P_H(2)$ above since vertex $2$ in $H$ has out-neighb
 
 \subsection*{CONCLUSION}
 We have shown the existence of a pair of oriented graphs $D$ and $H$ with $n=12$ vertices that have the same switching deck, but
-are not isomorphic. This proves the existence of switching, non-reconstructible oriented graphs on twelve vertices. 
+are not isomorphic. This proves the existence of switching, non-reconstructible oriented graphs on twelve vertices.
+\end{collabblock}
 
 \section*{FURTHER QUESTIONS}
 

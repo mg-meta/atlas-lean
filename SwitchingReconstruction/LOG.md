@@ -71,3 +71,55 @@ against `Comparator/switching_reconstruction_comparator.json`.
   files. A headless-Chrome screenshot could not be taken because macOS
   denied Chrome's sandbox bootstrap in this environment, so the rendered
   KaTeX layout has not been screenshot-verified here.
+
+## 2026-11-04 — Human + AI sidebar added to Problem Statement + Solution
+
+**What was done (user's direct instruction; overrides AGENTS.md
+"originals are read-only" for this paper source):** the `collabblock`
+Human + AI sidebar from `Temp_Packages.zip` (both papers there —
+`Ruel_Anderson_Second_Derivatve.tex` and
+`Uniform_Real_Zero_Bounds_Constant.tex` — define it identically in the
+paper preamble, not in `stylelibrary.tex`) was copied verbatim into
+`Papers/Latex/main.tex`: teal `collabcolor` (HTML `129B8F`), breakable
+`tcolorbox` with the same `linemargin`/`enhancebreak`/`footnoteformat`
+mechanism as `humanblock`, vertical "Human + AI" label, plus
+`\CollabLabel`. One continuous `collabblock` now spans the Problem
+Statement and Solution sections (opens after `\section{Problem
+Statement}`, `\section{Solution}` inside the box, closes after the
+CONCLUSION, before Further Questions), matching the human sidebar
+format. The Statement of AI Use sentence was extended to name the
+joint marker. Only `main.tex` changed (27 insertions); `stylelibrary.tex`,
+`flexart.sty`, and `bib.bib` untouched.
+**Verified:** begin/end balance and brace balance checked;
+`collabblock` body diffed identical to both example papers. **Not
+verified:** no `pdflatex` exists on this machine (full-disk search
+found none), so the rebuilt PDF was not produced or inspected here —
+rebuild with `pdflatex` in `Papers/Latex/` and replace
+`Switching_Reconstruction.pdf`.
+
+## 2026-11-04 — PDF regenerated with the continuous Human + AI sidebar
+
+**Build:** no `pdflatex` exists on this machine (full-disk search found
+none; no Homebrew/cargo/docker). Installed Tectonic 0.17.0 (aarch64
+macOS binary, user space, `/tmp/texinstall`) and built
+`Papers/Latex/main.tex` with `tectonic -Z continue-on-errors` in a
+scratch dir (`/tmp/switchbuild`); the output replaced
+`Papers/Switching_Reconstruction.pdf` only after verification below.
+**Pre-existing defect exposed by the sidebar, fixed:** `claim` was
+used in the Solution but never declared (`\newtheorem{claim}` added
+to `main.tex`). Outside a box the error was silently ignored; inside
+the `collabblock` it broke tcolorbox capture. The claim now renders
+as "Claim 3.1". The three remaining `flexart` author-note errors
+(`orch`/`rev` undeclared, notes commented out) pre-date this work and
+were left untouched; they are tolerated under continue-on-errors, as
+in the original nonstopmode build.
+**Verified on the rendered PDF (5 pages):** vector-geometry check
+(teal `129B8F` fragments at one fixed left position on pages 1-5,
+"Human + AI" label at each fragment) and visual inspection of pages
+1, 2, 4, 5 — one continuous teal bar from Problem Statement through
+the Conclusion, distinct green Human bars for Introduction and
+Further Questions, all matrices, the psi table, profiles, and all 6
+references intact. Engine note: this build is XeTeX/xdvipdfmx via
+Tectonic, not the pdfTeX/TeX Live 2026 of the previous PDF, so fonts
+differ slightly (80K vs 302K, same page count and content). Old PDF
+kept at `/tmp/switchbuild/OLD_Switching_Reconstruction.pdf`.

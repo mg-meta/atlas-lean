@@ -1,0 +1,776 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amssymb, amsmath, amsthm}
+\usepackage{mathtools}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+\usepackage{lipsum}
+\usepackage{comment}
+\usepackage{enumitem}
+\usepackage{tikz-cd}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,shadows}
+\usepackage{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{caption}
+
+\usepackage{verbatim}
+
+\newenvironment{myalgorithm}[1][]{%
+  \par\vspace{8pt}
+  \noindent\hrule height.8pt
+  \vspace{4pt}
+  \ifblank{#1}{}{%
+    \captionof{algorithm}{#1}%
+    \vspace{4pt}
+    \noindent\hrule height.4pt
+    \vspace{6pt}
+  }%
+}{%
+  \vspace{6pt}
+  \noindent\hrule height.8pt
+  \par\vspace{8pt}
+}
+
+
+
+
+
+% Custom packages
+\usepackage{flexart}
+\input{stylelibrary}
+\newcommand{\Muse}{\footnotesize with {Muse Spark} via {\ttfamily \href{http://meta.ai}{meta.ai}}}
+\newcommand{\HumanLabel}{
+({\bfseries\sffamily\color{humancolor!70}Human})
+}
+\newcommand{\AILabel}{
+({\bfseries\sffamily\color{aicolor!70}AI})
+}
+
+%GAP Code boxes
+\definecolor{codebg}{RGB}{245,245,245}
+\usepackage{listings}
+% 
+\lstdefinelanguage{GAP}{
+  morekeywords={if,then,else,elif,fi,for,do,od,while,local,function,return,rec,Error},
+  sensitive=true,
+  morecomment=[l]{\#},
+  morestring=[b]",
+  morestring=[b]'
+}
+\lstset{
+  language=GAP,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\color{blue}\bfseries, % <- blue differentiators
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{red!60!black},
+  backgroundcolor=\color{codebg},
+  frame=single,
+  framerule=0.4pt,
+  rulecolor=\color{black!5},
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  upquote=true,
+  showstringspaces=false
+}
+
+
+%% Commands
+%%%_____________________________________
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{con}[thm]{Conjecture}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{qst}[thm]{Question}
+\newtheorem{assumption}[thm]{Assumption}
+\newtheorem{rem}[thm]{Remark} 
+\newtheorem{exm}[thm]{Example}
+
+\numberwithin{equation}{section}
+
+
+\font\com=cmtt10
+\def\hb{\hfill\break}
+\def\comment#1{\hb {\com\par\hskip2in \#\#\#\#\#\#\par #1 \par\hskip2in
+\#\#\#\#\#\#}\hb}
+
+
+
+%% short title (plain article's \title takes no optional argument)
+\title{Semiabelian groups need not be monomial}
+% \subtitle{Every key group exercised in one document}
+%% Declare each note once, then mark as many authors as you like with it.
+
+% \newfanote{orch}{Orchestrating author}
+\newfanote{supp}{Supporting author}
+% \newfanote{rev}{Reviewing author} % Uncomment to add the 'reviewing author' category
+
+\primaryauthors{
+{\scshape Joseph Phillip Brennan}\fanote{supp}
+\and
+{\scshape Milana Golich}%\fanote{orch}
+\\
+\Muse
+}
+
+\secondaryauthorlabel{Reviewed by}
+
+
+\secondaryauthors{
+{\scshape Andres Barei}
+\and
+{\scshape John Portin}
+% \fanote{rev} % Uncomment to make this a reviewing author
+}
+
+
+\subjclass[2020]{20D10, 20C15}
+% \affiliation{Department of Typographic Engineering, Example University}
+% \keywords{LaTeX, front matter, sectioning, regression test}
+\flexabstract{%
+We disprove a conjecture of M. Kida by exhibiting a finite semiabelian group of order 384 that is not monomial. The example is given by {\ttfamily \small GAP}'s SmallGroups library as $\texttt{SmallGroup}(384, 20127)$ which is isomorphic to the group $((C_2 \times ((C_2 \times Q_8) \rtimes C_2)) \rtimes C_2) \rtimes C_3$.
+We remark on the use of AI in this research, see Statement of AI Use.
+}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+\begin{humanblock}
+Semiabelian groups were first established within inverse Galois theory by Saltman \cite{Saltman82}, Thompson \cite{Thompson84}, and Matzat \cite{Matzat87} as a subclass of finite solvable groups that play a role in the solvability of split embedding problems with abelian kernel. This was further explored by Stoll \cite{Stoll95} and Dentzer \cite{Dentzer95} who showed that semiabelian groups occur as the Galois groups over Hilbertian fields. In \cite{Legrand22}, Legrand extended this result to division rings by showing that for every division ring $H$ and every automorphism $\sigma$ of finite order, all semiabelian groups occur as the Galois group over the skew field of fractions $H(T, \sigma)$. It was over the course of these developments that the definition of semiabelian groups evolved into its present form:  
+
+\begin{defn}{\label{maindefn}}
+A finite group $G$ is called \textit{semiabelian} if it has a sequence 
+\begin{center}
+$G_{0} = 1 \le G_{1} \le \cdots \le G_{n} = G$
+\end{center}
+such that $G_{i+1}$ is a quotient group of $G_{i} \ltimes A_{i}$ with a finite abelian group $A_{i}$ for all $i = 0,...,n-1$.
+\end{defn}
+
+Elementary properties of semiabelian groups were derived naturally through the explicit derivation of semiabelian groups as Galois groups, but still much remained unknown about their group structure. Kida \cite{Kida25} conducted a more thorough investigation into their group properties, but had found the recursive nature of their definition to be challenging in characterizing such groups. In fact, any inductive argument to characterize would fail in this regard since subgroups of semiabelian groups do not inherit the semiabelian property. Thus as a means to assist in classification, Kida uses the machinery of P. Hall \cite{Hall40} to prove that semiabelian groups are invariant under isoclinism class. Here Kida suggests a strong connection with monomial groups, also invariant under isoclinism class, and derived further results in \cite{Kida25} to support this. This led to the following conjecture: 
+
+\begin{con}[Kida]\label{conj}
+If a group $G$ is semiabelian, then $G$ is monomial.
+\end{con}
+
+A small computational check in support of the conjecture was performed via the computer algebra system Magma up to groups of order 240 \cite{Kida25}. Specifically, the Magma code unsuccessfully found counterexamples after implementing the following simple search algorithm: identify all non-monomial groups up to order 240 and check if they are also semiabelian. The main goal of this article is to present our continued search strategy for counterexamples of groups that are of order greater than 240. As a part of our findings, we show the existence of a finite group of order 384 that serves as a counterexample to Conjecture \ref{conj}. This gives the following main theorem: 
+
+\begin{thm}{\label{mainthm}}
+    Semiabelian groups need not be monomial. 
+\end{thm}
+
+The counterexample was found via an extended search over the computer algebra system {\ttfamily \large GAP}'s \cite{GAP} SmallGroups library \cite{SmallGrp} and can be identified as $G = \texttt{SmallGroup}(384, 20127)$ which is isomorphic to the group $((C_2 \times ((C_2 \times Q_8) \rtimes C_2)) \rtimes C_2) \rtimes C_3$. Throughout the remaining sections of this article, we present a literature review of semiabelian and monomial groups, our search strategy via {\ttfamily \large GAP}, and our computational findings.
+\end{humanblock}
+
+
+\section*{Statement of AI Use}
+
+\begin{humanblock}
+This paper was developed through collaboration between researchers and Muse Spark (AI model) via the \href{http://meta.ai}{meta.ai} chat interface. The model helped explore ideas, develop candidate arguments, and draft material. Researchers guided the work, checked and corrected the mathematics, and take ownership for the final manuscript. Following \cite{schmitt2025extremal}, margin markers identify human-drafted \!\!\HumanLabel and AI-assisted material \!\!\AILabel separately.
+\end{humanblock}
+
+\section*{Concurrent Work}
+\begin{humanblock}
+While in the process of completing this work, the authors became aware of an additional counterexample provided on September 16, 2026 by the AI agent Nilradical \cite{nilradical_v0_kourovka_21_68}. In this article, we offer both a minimal counterexample and also theoretical results that were done  independently from that of Nilradical. 
+\end{humanblock}
+
+
+
+\section{Preliminaries}
+\begin{humanblock}
+\subsection{Semiabelian Groups}
+For the purpose of identifying semiabelian groups within the family of finite solvable groups, we present a few useful properties.   
+
+% \medskip
+
+First, it is easily seen that abelian groups are semiabelian. For a nilpotent group to be semiabelian, the group must have nilpotency class of at least 2 \cite{Thompson84}. If a solvable group $G$ is semiabelian, then it admits an abelian normal subgroup which is not contained in the Frattini subgroup $\Phi(G)$. These three conditions will be useful for our search strategy outlined in section \ref{Sec31}. 
+
+% \medskip
+
+To provide background on the derivation of Conjecture \ref{conj}, we also explore a convenient link between semiabelian groups, modular groups, and quaternion-free groups, and recall their definitions here:
+
+% \medskip 
+% \medskip
+
+\begin{defn}[Kida, Definition 3.1]
+    A finite $p$-group $G$ is \textit{modular} if the subgroup lattice of $G$ is a modular lattice, namely, $\langle A, B \rangle \cap C = \langle A, B \cap C \rangle$ for subgroups $A, B, C$ of $G$
+such that $A \leq C$.
+\end{defn}
+
+\begin{defn}[Kida, Definition 3.7]
+A 2-group $G$ is called \textit{quaternion-free} if all homomorphic images of every subgroup of $G$ do not contain a subgroup isomorphic to $Q_8$. 
+\end{defn}
+
+As it turns out, modular $p$-groups and quaternion-free 2-groups are semiabelian \cite{Kida25}. It is from these subclasses that Kida forms the main connection between semiabelian groups and monomial groups, and we establish this in the next section.  
+
+
+% \medskip
+% \medskip 
+
+\subsection{Monomial Groups}
+We first recall the definition of a monomial group here: 
+
+\begin{defn}
+    A group is \textit{monomial} if every irreducible representation of $G$
+ can be obtained via induction from a one dimensional representation of some subgroup of $G$.
+\end{defn}
+
+As a means to identify if a finite solvable group is monomial, Dornhoff \cite{dornhoff1967mgroups} proposed the following criterion in connection with modular $p$-groups and quaternion-free 2-groups:
+
+\begin{thm}[Dornhoff, Theorem 2.6]\label{Dornhoff}
+    If a solvable group $G$ is such that 
+
+    \begin{enumerate}
+        \item the Sylow $p$-subgroups are modular for $p \geq 3$, and
+        \item the Sylow $2$-subgroup is quaternion-free,
+    \end{enumerate}
+    then $G$ is monomial. 
+\end{thm}
+
+
+Kida suggests in Remark 5.2 of \cite{Kida25} that an analogous statement to Theorem \ref{Dornhoff} may be said about solvable groups that are semiabelian, raising the following question: under what conditions should we expect the semiabelian and monomial properties to agree? We investigate this further in Section \ref{subsec: isoclinism}. 
+
+\subsection{Isoclinism Classes and Conjecture \ref{conj}}\label{subsec: isoclinism} 
+In an attempt to formally bridge the two properties, Kida turned to isoclinism classes, an equivalence relation first introduced by P. Hall to classify subclasses of solvable groups {\cite{Hall40}}. 
+
+
+Given a pair of groups $G_1$ and $G_2$, we say that they are \textit{isoclinic} if there exists an isomorphism $\varphi: G_1/Z(G_1) \to G_2/Z(G_2)$ that induces an isomorphism $\psi: [G_1, G_1] \to [G_2,G_2]$ such that the following diagram commutes: 
+
+%Monomial groups were first shown to admit a strong connection with semiabelian groups through their shared invariance under isoclinism class (\cite{Kida25}). 
+
+\begin{center}
+\begin{tikzcd}[row sep = scriptsize, column sep = scriptsize]
+G_1/Z(G_1) \times G_1/Z(G_1) \ar[rr, "\varphi \times \varphi"] \ar[dd, "{[\cdot, \cdot]}_{G_1}"] && G_2/Z(G_2) \times G_2/Z(G_2) \ar[dd, "{[\cdot, \cdot]}_{G_2}"]\\
+\\
+{[G_1, G_1]}  \ar[rr, "\psi"] && {[G_2, G_2]}
+\end{tikzcd}
+\end{center}
+
+
+Furthermore, we say groups $G_1$ and $G_2$ lie in the same \textit{isoclinism class} if $G_1$ is isoclinic to $G_2$. Isoclinism is therefore a weaker version of isomorphism. Informally, we think of two groups as isoclinic if their commutator structure is the same. For instance, all abelian groups are isoclinic to one another since their commutator is trivial, and $D_8$ and $Q_8$ are isoclinic but not isomorphic.
+
+Many subclasses of finite solvable groups, including monomial groups, were first shown to be invariant under isoclinism in \cite{bioch1978monomiality}, and later extended to semiabelian groups in \cite{Kida25}. 
+As a result, we have the following hierarchy:
+
+\begin{center}
+\begin{tikzcd}
+{} && \text{nilpotent} \ar[rr, hook] && \text{monomial}  \ar[drr, hook] &&  {}  \\
+\text{abelian} \ar[urr, hook] \ar[drr, hook] && {} && {} && \text{solvable} \\ 
+{} && \text{nilpotent of class 2} \ar[rr, hook] \ar[uu, hook] && \text{semiabelian} \ar[urr, hook] &&  {}
+\end{tikzcd}
+\end{center}
+
+It was thus through this shared invariance that semiabelian groups were shown to admit a strong connection with monomial groups \cite{Kida25}. The main result of which was the primary contributor to the statement of Conjecture \ref{conj}: 
+
+\begin{thm}[Kida, Theorem 1.4]{\label{Thm32}}
+     Let $\mathcal{A}$ be an isoclinism invariant class of finite groups with the property that if $G \in \mathcal{A}$, then every subgroup of $G$ is contained in $\mathcal{A}$ and every homomorphic image of $G$ is in $\mathcal{A}$. If $\mathcal{A}$ consists of semiabelian groups, then every $G \in \mathcal{A}$ is monomial.
+\end{thm}
+
+We note, however, that there is not an analogous result to Theorem \ref{Thm32} that would apply to the converse of Conjecture \ref{conj}. In fact, it is well known that the converse does not hold true within the class of supersolvable groups. An explicit example of which was referenced by Kida as the group $G = \texttt{SmallGroup}(256,330)$ (\cite{Kida25}, Example 4.8). 
+
+\end{humanblock}
+
+
+\section{Search Strategy}
+\label{sec: semiabelian groups}
+\begin{humanblock}
+In this section, we propose our two-fold search strategy: first verifying whether a group is semiabelian, then checking for non-monomiality. 
+
+ \subsection{Semiabelian Group Check}{\label{Sec31}}
+The first goal of our search strategy is to manually check if a group is semiabelian. Given the recursive nature of Definition \ref{maindefn}, we aim to minimize the computational complexity of the search. Hence we perform our check over the following minimal characterization of semiabelian groups given by Dentzer \cite{Dentzer95}:
+
+% \medskip
+% \medskip
+
+\begin{lem}[Dentzer, Theorem 2.3]{\label{Dentz}}
+     A non-trivial finite group G is semiabelian if and
+only if there is an abelian normal subgroup A and a proper semiabelian subgroup
+M such that G = AM.
+\end{lem}
+
+
+Computationally, finding a candidate pair $(A,M)$ that satisfies Lemma \ref{Dentz} would require enumerating all subgroups of $G$ and computing their product with every normal abelian subgroup. However, we will show that it suffices to check only one class representative of each conjugacy class of maximal subgroups. 
+
+\end{humanblock}
+\begin{aiblock}
+
+\begin{lem}\label{lem: semiabelian-pullback}
+    Let $G$ be a finite semiabelian group that admits an abelian normal subgroup $A \lhd G$ and a proper semiabelian subgroup $U < G$ such that $G = AU$. Then for every maximal subgroup $M$ with $U \leq M < G$, $G =AM$ and $M$ is semiabelian. 
+\end{lem}
+
+\begin{proof}
+    If $U$ is maximal, we are done. So, assume that $U < M$ and let $L = M \cap A$. We will show that $L$ is a normal abelian subgroup of $M$ and that $M = (M \cap A) U$. Hence $M$ is the product of a normal abelian subgroup and a semiabelian subgroup, which implies that $M$ is semiabelian. 
+
+    Let $m = au$ for some $m \in M$, $a \in A$, and $u \in U$. Then $a = m u^{-1} \in M$, so that $a \in M \cap A$. Given that $G = AU$ and $U \leq M$, the Dedekind modular law gives
+    \[  M \cap G = M \cap AU = (M \cap A) U = LU. \]
+
+    If follows that $L$ is abelian, since $M \cap A \leq A$. To see that $L \lhd M$, let $m \in M$, $a\in L$ and consider $mam^{-1}$. Since $a \in L = M \cap A$, then $m a m^{-1} \in M$. Further, since $A \lhd G$, $m a m^{-1} \in A$. Thus $mam^{-1} \in L$ so that $mLm^{-1} \subseteq L$. Similarly, $mLm^{-1} \supseteq L$. Hence $L \lhd M$. 
+\end{proof}
+
+For a group $G$ and subset $K \subseteq G$, denote the conjugate of $K$ by $g \in G$ as $K^g := \{  g^{-1} k g : k \in K \}$. Semiabelian groups are also closed under conjugation. 
+
+\begin{lem}
+    Let $G$ be a finite group and $M \leq G$ a maximal subgroup. Then $M$ is semiabelian if and only if $M^g$ is semiabelian for any $g \in G$. Further, if $G = AM$, then $G = AM^g$.  
+\end{lem}
+
+
+\begin{proof}
+    Let $A \lhd G$ be a normal abelian group witnessing $G$ being semiabelian, and let $g \in G$. Consider,  
+\[
+        G = G^g = (AM)^g = A^g M^g = A M^g.
+\]
+    Further, since conjugates are isomorphic, $M$ is semiabelian if and only if $M^g$ is as well. 
+\end{proof}
+\end{aiblock}
+\begin{humanblock} 
+
+    Muse Spark then assisted in generating the {\ttfamily \large GAP} code to implement Dentzer's lemma as a means to check if a group is semiabelian. The full code block used is given in Appendix \ref{app: semiabelian}. We provide here a basic scheme that reflects the algorithm behind the code: 
+
+    \end{humanblock}
+\vspace{.25cm}%Maybe leave this one
+\begin{aiblock}
+\input{algorithm}
+\end{aiblock}
+
+
+\begin{humanblock}
+\subsection{Monomial Group Check}
+To continue our search, we check if a group verified to be semiabelian is also non-monomial. Conveniently, we use {\ttfamily \large GAP}'s built-in function \texttt{IsMonomial} to check if a group is non-monomial. This allows for a straightforward verification of monomiality in comparison to the semiabelian check outlined in Section \ref{Sec31}. 
+\end{humanblock}
+
+
+
+\section{{\ttfamily \Large GAP}'s SmallGroups example}
+\begin{humanblock}
+
+
+To complete our search, we prompted Muse Spark to generate a comprehensive semiabelian, non-monomial search algorithm in {\ttfamily \large GAP}. We ran the algorithm for groups up to order 900. For reference, we include the full code block used in Appendix \ref{app: semiabelian nonmonomial search}. 
+\subsection{Counterexample to Conjecture \ref{conj}}
+As a direct consequence of running the complete search algorithm in {\ttfamily \large GAP}, we received the following counterexample to Conjecture \ref{conj}:
+\[  
+G = \texttt{SmallGroup}(384,20127) = ((C_2 \times ((C_2 \times Q_8) \rtimes C_2)) \rtimes C_2) \rtimes C_3.  
+\]
+
+
+That is, the solvable group $G$ of order 384 is semiabelian, but non-monomial. The decomposition of $G$ is given by {\ttfamily \large GAP}'s SmallGroups library \cite{SmallGrp}. 
+
+For reference, we cite the {\ttfamily \large GAP} output for our complete search algorithm in Appendix \ref{app: output}.
+
+
+\subsection{Final Verification} In effort to fully verify that $G$ satisfies Dentzer's lemma \ref{Dentz}, we implemented a final check in {\ttfamily \large GAP}. The code is included in Appendix \ref{app: semiabelian nonmonomial search} and the output in Appendix \ref{app: output}. The recursive decomposition into the product of abelian and semiabelian groups is given as follows:
+\begin{align*}
+G &= A_0 M_0 = (C_2 \times C_2 \times C_2)\big(((C_2 \times C_2 \times C_2) \rtimes (C_2 \times C_2)) \rtimes C_3\big)\\
+M_0 &= A_1 M_1 = (C_2 \times C_2 \times C_2)(C_2 \times A_4)\\
+M_1 &= A_2 M_2 = (C_2 \times C_2 \times C_2)(A_4)\\
+M_2 &= A_3 M_3 = (C_2 \times C_2)(C_3)\\
+M_3 &= C_3.
+\end{align*}
+
+The groups $A_i$ for $i = 0, 1, 2, 3$ are abelian since they are either cyclic groups or the direct product thereof. The initial group $M_3$ is semiabelian since it is abelian. Following the chain, the $M_i$ for $i = 2, 1, 0$ are semiabelian using Definition \ref{Dentz}. This finalizes our search and proves Theorem \ref{mainthm}.
+
+
+
+\begin{rem}
+We note that one can build countably more semiabelian, non-monomial groups from this base example via direct products. In particular, we cite the following lemmas from Kida \cite{Kida25} and W. van der Waall \cite{vdWaall88}: 
+
+\begin{lem}[Kida, Lemma 2.5]
+    If $G$ and $H$ are semiabelian groups, then the direct product $G \times H$ is semiabelian. 
+\end{lem}
+
+\begin{lem}[W. van der Waall, Theorem 2]
+The direct product $G \times H$ is monomial if and only if $G$ and $H$ are monomial. 
+\end{lem}
+
+
+Hence we may simply take the direct product between $G = \texttt{SmallGroup}(384,20127)$ and any semiabelian group $H$ to build countably more examples that are semiabelian and non-monomial.
+\end{rem}
+
+\begin{rem}
+We also remark that this counterexample $G$ serves as a stem group in its isoclinism class. That is, $G$ satisfies $Z(G) \leq [G,G]$ and serves as a representative of its class.
+\end{rem}
+\end{humanblock}
+
+\section{Conclusion}
+\begin{humanblock}
+In our search over groups up to order 900, we did find a pair of groups of order 768 that are semiabelian and non-monomial, but they lie in the same isoclinism class as $G$. Beyond our search, the AI agent Nilradical \cite{nilradical_v0_kourovka_21_68} had found another group of order 2592 that lies in this isoclinism class. Still, it remains unknown whether there exists examples unique to $G$. We hope that this motivates further study into the structure of such groups.
+
+As a closing remark, one insight possibly worth studying further would be the conditions of Dornhoff's theorem given in Theorem \ref{Dornhoff}. The main question of interest being the following: can Dornhoff's criteria be refined into necessary and sufficient conditions for a group to be both semiabelian and monomial? For the particular counterexample that we found, we have $G = P \rtimes C_3$ where $P$ is a normal $2$-subgroup of order 128 isomorphic to $(C_2 \times ((C_2 \times Q_8) \rtimes C_2)) \rtimes C_2$. Hence $P$ is the unique Sylow 2-subgroup and contains a $Q_8$ subgroup. Consequently, $G$ fails to satisfy condition (2) of Dornhoff's theorem. 
+
+Therefore, we conclude with the following question: 
+
+\begin{qst}
+    Must all finite semiabelian, non-monomial groups admit a Sylow 2-subgroup that contains a group isomorphic to $Q_8$? 
+\end{qst}
+
+ 
+
+\end{humanblock}
+
+
+\section*{Acknowledgments}
+
+The authors would like to thank Ricky Simanjuntak for discussions at various stages of this project and his feedback on the final draft. The authors would also like to thank Andres Barei and John Portin for so kindly reviewing this work and offering very thoughtful suggestions and edits which have greatly improved the content of this draft. 
+
+\appendix 
+
+\section{{\ttfamily \Large GAP} code}\label{app: gap code}
+
+We performed the following computations in {\ttfamily \large GAP} 4.16.1: 
+
+
+\begin{aiblock}
+
+\subsection{Semiabelian group check}
+\label{app: semiabelian}
+\mbox{}
+
+\begin{lstlisting}[language=GAP]
+    
+#############################################################################
+# semiabelian.g 
+#############################################################################
+
+if not IsBound(SEMIABELIAN_CACHE) then
+  SEMIABELIAN_CACHE := rec();
+fi;
+
+ClearSemiabelianCache := function()
+  SEMIABELIAN_CACHE := rec();
+end;
+
+SemiabelianCacheKey := function(G)
+  local r, id;
+  if Size(G) > 2000 or Size(G) = 1024 then
+    return fail;
+  fi;
+  r := CALL_WITH_CATCH(function() return IdGroup(G); end, []);
+  if not r[1] then
+    return fail;
+  fi;
+  id := r[2];
+  return Concatenation("N", String(id[1]), "_", String(id[2]));
+end;
+
+IsSemiabelianGroup := function(G)
+  local n, key, phi, abNormals, maxReps, A, M;
+
+  if not IsGroup(G) or not IsFinite(G) then
+    Error("IsSemiabelianGroup: finite group expected");
+  fi;
+
+  n := Size(G);
+  if n = 1 then return true; fi;
+  if IsAbelian(G) then return true; fi;
+  if not IsSolvableGroup(G) then return false; fi;
+  if IsNilpotentGroup(G) and NilpotencyClassOfGroup(G) <= 2 then
+    return true;
+  fi;
+
+  key := SemiabelianCacheKey(G);
+  if key <> fail and IsBound(SEMIABELIAN_CACHE.(key)) then
+    return SEMIABELIAN_CACHE.(key);
+  fi;
+
+  phi := FrattiniSubgroup(G);
+  
+  abNormals := ShallowCopy(Filtered(NormalSubgroups(G),
+    N -> Size(N) > 1 and Size(N) < n and IsAbelian(N) and not IsSubgroup(phi, N)
+  ));
+
+  if Length(abNormals) = 0 then
+    if key <> fail then SEMIABELIAN_CACHE.(key) := false; fi;
+    return false;
+  fi;
+
+  Sort(abNormals, function(a,b) return Size(a) < Size(b); end);
+  abNormals := Reversed(abNormals); # descending for fast witness
+
+  maxReps := ShallowCopy(MaximalSubgroupClassReps(G));
+
+  Sort(maxReps, function(a,b) return Size(a) < Size(b); end);
+  maxReps := Reversed(maxReps);
+
+  for A in abNormals do
+    for M in maxReps do
+      if Size(ClosureGroup(A, M)) = n then
+        if IsSemiabelianGroup(M) then
+          if key <> fail then SEMIABELIAN_CACHE.(key) := true; fi;
+          return true;
+        fi;
+      fi;
+    od;
+  od;
+
+  if key <> fail then SEMIABELIAN_CACHE.(key) := false; fi;
+  return false;
+end;
+
+IsSemiabelian := IsSemiabelianGroup;
+\end{lstlisting}
+
+
+
+
+\subsection{Semiabelian non-monomial search}
+\label{app: semiabelian nonmonomial search}
+\mbox{}
+
+\begin{lstlisting}[language=GAP]
+#############################################################################
+# semiabelian_nonmonomial_search.g
+# Find G with |G|>240 such that IsSemiabelianGroup(G) and not IsMonomialGroup(G)
+# Requires semiabelian.g
+#############################################################################
+
+if not IsBound(IsSemiabelianGroup) then
+  Read("semiabelian.g");
+fi;
+
+if not IsBound(MONOMIAL_CACHE) then
+  MONOMIAL_CACHE := rec();
+fi;
+if not IsBound(SEMIABELIAN_NONMONOMIAL_CANDIDATES) then
+  SEMIABELIAN_NONMONOMIAL_CANDIDATES := [];
+fi;
+
+SafeNumberSmallGroups := function(n)
+  local r;
+  if n = 1024 then
+    Print("# 1024 has 49bn groups - skipping\n");
+    return fail;
+  fi;
+  r := CALL_WITH_CATCH(function() return NumberSmallGroups(n); end, []);
+  if not r[1] then
+    Print("# NumberSmallGroups(",n,") failed - skipping\n");
+    return fail;
+  fi;
+  return r[2];
+end;
+
+SemiCacheKeyMonomial := function(G)
+  local r, id;
+  if Size(G) > 2000 or Size(G)=1024 then return fail; fi;
+  r := CALL_WITH_CATCH(function() return IdGroup(G); end, []);
+  if not r[1] then return fail; fi;
+  id := r[2];
+  return Concatenation("M", String(id[1]), "_", String(id[2]));
+end;
+
+IsNonMonomialVerified := function(G)
+  local key, t, tbl, chi;
+  if not IsSolvableGroup(G) then return true; fi; # Taketa
+
+  key := SemiCacheKeyMonomial(G);
+  if key <> fail and IsBound(MONOMIAL_CACHE.(key)) then
+    return not MONOMIAL_CACHE.(key);
+  fi;
+  
+  if HasIsMonomialGroup(G) then
+    if key <> fail then MONOMIAL_CACHE.(key) := IsMonomialGroup(G); fi;
+    return not IsMonomialGroup(G);
+  fi;
+
+  t := TestMonomialQuick(G);
+  if t.isMonomial = false then
+    if key <> fail then MONOMIAL_CACHE.(key) := false; fi;
+    return true;
+  elif t.isMonomial = true then
+    if key <> fail then MONOMIAL_CACHE.(key) := true; fi;
+    return false;
+  fi;
+
+  t := TestMonomial(G);
+  if t.isMonomial = false then
+    if key <> fail then MONOMIAL_CACHE.(key) := false; fi;
+    return true;
+  elif t.isMonomial = true then
+    if key <> fail then MONOMIAL_CACHE.(key) := true; fi;
+    return false;
+  fi;
+
+  # scan Irr
+  tbl := CharacterTable(G);
+  for chi in Irr(tbl) do
+    if TestMonomial(chi).isMonomial = false then
+      if key <> fail then MONOMIAL_CACHE.(key) := false; fi;
+      return true;
+    fi;
+  od;
+  if key <> fail then MONOMIAL_CACHE.(key) := true; fi;
+  return false;
+end;
+
+# Optimized check: monomial first (cheaper than semiabelian)
+IsSemiabelianNonMonomial := function(G)
+  # both properties imply solvable - fast filter
+  if not IsSolvableGroup(G) then return false; fi;
+  # supersolvable => monomial => cannot be non-monomial
+  if IsSupersolvableGroup(G) or IsAbelian(G) then return false; fi;
+  # expensive lattice last: test non-monomial first
+  if not IsNonMonomialVerified(G) then return false; fi;
+  # now expensive semiabelian recursion
+  if not IsSemiabelianGroup(G) then return false; fi;
+  return true;
+end;
+
+ValidateCandidate := function(G)
+  Print("=== Candidate ", IdGroup(G), " ", StructureDescription(G), "\n");
+  Print(" Size: ", Size(G), " Solvable: ", IsSolvableGroup(G), "\n");
+  Print(" IsSupersolvable: ", IsSupersolvableGroup(G), "\n");
+  Print(" IsMonomialGroup: ", IsMonomialGroup(G),
+        " Has: ", HasIsMonomialGroup(G), "\n");
+  Print(" IsSemiabelian: ", IsSemiabelianGroup(G), "\n");
+  Print(" Derived length: ", DerivedLength(G),
+        " Irr degrees: ", List(Irr(CharacterTable(G)), Degree), "\n");
+end;
+
+SearchOrderOptimized := function(n)
+  local num, i, G, cands, t0;
+  num := SafeNumberSmallGroups(n);
+  if num = fail then return []; fi;
+  cands := [];
+  Print("# Searching order ", n, " (", num, " groups) >240\n");
+  t0 := Runtime();
+  for i in [1..num] do
+    if i mod 500 = 0 then
+      Print("# ", n, ":", i, "/", num, " cands:", Length(cands),
+            " time ", (Runtime()-t0)/1000.0, "s\n");
+    fi;
+    G := SmallGroup(n,i);
+    if IsSemiabelianNonMonomial(G) then
+      Add(cands, [n,i]);
+      Add(SEMIABELIAN_NONMONOMIAL_CANDIDATES, [n,i]);
+      Print("!!! FOUND order ", n, " id ", i, " : ", IdGroup(G), "\n");
+      ValidateCandidate(G);
+    fi;
+  od;
+  Print("# Done order ", n, " found ", Length(cands), "\n");
+  return cands;
+end;
+
+SearchRangeOptimized := function(a,b)
+  local n, all;
+  all := [];
+  for n in [a..b] do
+    Append(all, SearchOrderOptimized(n));
+  od;
+  return all;
+end;
+\end{lstlisting}
+
+
+    
+\subsection{Final check: Verifying Lemma 1.2} 
+\label{app: verification}
+\mbox{}
+
+\begin{lstlisting}[language=GAP]
+FindWitness := function(G)
+  local ab, maxs, A, M;
+  ab := ShallowCopy(Filtered(NormalSubgroups(G),
+          N-> IsAbelian(N) and Size(N)>1 and Size(N)<Size(G)));
+  Sort(ab, function(a,b) return Size(a) < Size(b); end);
+  ab := Reversed(ab);
+
+  maxs := ShallowCopy(MaximalSubgroupClassReps(G));
+  Sort(maxs, function(a,b) return Size(a) < Size(b); end);
+  maxs := Reversed(maxs);
+
+  for A in ab do
+    for M in maxs do
+      if Size(ClosureGroup(A,M)) = Size(G) and IsSemiabelianGroup(M) then
+        return [A,M];
+      fi;
+    od;
+  od;
+  return fail;
+end;
+
+PrintChain := function(G, depth)
+  local w, i, indent;
+  indent := "";
+  for i in [1..depth] do
+    indent := Concatenation(indent, " ");
+  od;
+
+  if Size(G)=1 then
+    Print(indent, "1 trivial\n");
+    return;
+  fi;
+  if IsAbelian(G) then
+    Print(indent, Size(G), " abelian ", StructureDescription(G), "\n");
+    return;
+  fi;
+
+  w := FindWitness(G);
+  if w = fail then
+    Print(indent, Size(G), " NO WITNESS FOUND\n");
+    return;
+  fi;
+
+  Print(indent, Size(G), " = |", Size(w[1]), "|*|", Size(w[2]), "| A=",
+        StructureDescription(w[1]), " M=", StructureDescription(w[2]), "\n");
+  PrintChain(w[2], depth+1);
+end;
+
+# test on your candidate
+G := SmallGroup(384,20127);
+PrintChain(G,0);
+\end{lstlisting}
+
+
+
+
+\subsection{Output of A.2 and A.3}
+\label{app: output}
+
+
+
+
+\subsubsection{Output of A.2}
+\mbox{}
+\begin{lstlisting}
+# Searching order 384 (56092 groups) >240
+!!! FOUND order 384 id 20127 : [ 384, 20127 ]
+=== Candidate [ 384, 20127 ]
+((C2 x ((C2 x Q8) : C2)) : C2) : C3
+Size: 384 Solvable: true
+IsSupersolvable: false
+IsMonomialGroup: false Has: true
+IsSemiabelian: true
+Derived length: 3
+Irr degrees: [1,1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,8,8,8]
+# Done order 384 found 1
+\end{lstlisting}
+\medskip
+
+\subsubsection{Output of A.3}
+\mbox{} \medskip
+\begin{lstlisting}
+gap> G:=SmallGroup(384,20127);;
+gap> PrintChain(G,0);
+384 = |8|*|96| A=C2 x C2 x C2 M=((C2 x C2 x C2) : (C2 x C2)) : C3
+96 = |8|*|24| A=C2 x C2 x C2 M=C2 x A4
+24 = |8|*|12| A=C2 x C2 x C2 M=A4
+12 = |4|*|3| A=C2 x C2 M=C3
+3 abelian C3
+\end{lstlisting}
+\end{aiblock}
+
+
+%==================== Bibliography ====================
+% \printbibliography
+\bibliographystyle{alpha}
+\bibliography{bib.bib}
+
+
+\end{document}

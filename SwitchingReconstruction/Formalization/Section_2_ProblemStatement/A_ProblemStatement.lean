@@ -20,9 +20,9 @@ question here as a `Prop`, in the signed-matrix language of
 by `exists_switching_nonreconstructible_ge_twelve` in
 `Section_3_Solution/E_MainTheorem.lean`.
 
-Background only (not results of this paper, not formalized — see
-`../../../GAPS.md`, G3): the Kelly–Ulam graph reconstruction conjecture and
-Stanley's vertex-switching question, cited in the Introduction.
+Background only (not results of this paper, not formalized): the
+Kelly–Ulam graph reconstruction conjecture and Stanley's
+vertex-switching question, cited in the Introduction.
 -/
 
 namespace SwitchingReconstruction
@@ -37,7 +37,7 @@ def SwitchingQuestion12 : Prop :=
 /-- The Bondy–Mercier question as posed ("twelve or more vertices"):
 there is some `n ≥ 12` carrying oriented graphs with the same switching
 deck that are not isomorphic. The paper proves this with `n = 12`; it does
-not give a construction for every `n ≥ 12` (see `../../../GAPS.md`, G1). -/
+not give a construction for every `n ≥ 12`. -/
 def SwitchingQuestion : Prop :=
   ∃ n : ℕ, 12 ≤ n ∧
     ∃ A B : Matrix (Fin n) (Fin n) ℤ,

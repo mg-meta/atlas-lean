@@ -15,8 +15,7 @@ import Section_3_Solution.E_MainTheorem
 /-! # Switching reconstruction of oriented graphs — library root
 
 Imports every paper-facing module above. Paper correspondence and source
-layout: see `../Readme.md`; natural-language proof and audit:
-`../PROOF_AUDIT.md`; gaps and open questions: `../GAPS.md`.
+layout: see `../Readme.md`.
 
 Build (from the repository root, with the pinned toolchain):
 

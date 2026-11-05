@@ -18,7 +18,7 @@ oriented graph on `12` vertices, answering the Bondy–Mercier question:
 such a digraph exists on twelve (hence on some `≥ 12`) vertices.
 
 The paper's Further Questions Q1 and Q2 are open problems and are not
-formalized; see `../../../GAPS.md`.
+formalized.
 -/
 
 namespace SwitchingReconstruction
@@ -39,7 +39,7 @@ theorem switchingQuestion12 : SwitchingQuestion12 :=
 switching non-reconstructible oriented graph on `n ≥ 12` vertices —
 namely on `n = 12` vertices. This answers the Bondy–Mercier question
 (`SwitchingQuestion`) as posed in the paper. The stronger reading "for
-every `n ≥ 12`" is not in the paper; see `../../../GAPS.md`, G1. -/
+every `n ≥ 12`" is not in the paper. -/
 theorem exists_switching_nonreconstructible_ge_twelve : SwitchingQuestion :=
   ⟨12, le_refl 12, matD, matH, matD_isOrientedMat, matH_isOrientedMat,
     sameSwitchingDeck_matD_matH, matD_not_iso_matH⟩

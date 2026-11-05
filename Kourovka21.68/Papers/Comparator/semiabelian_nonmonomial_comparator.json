@@ -1,0 +1,40 @@
+{
+  "challenge_module": "semiabelian_nonmonomial_comparator",
+  "solution_module": "SemiabelianNonMonomial",
+  "theorem_names": [
+    "SemiabelianNonMonomial.isSemiabelian_of_subsingleton",
+    "SemiabelianNonMonomial.isSemiabelian_of_commGroup",
+    "SemiabelianNonMonomial.IsSemiabelianStep.of_equiv",
+    "SemiabelianNonMonomial.IsSemiabelian.of_mulEquiv",
+    "SemiabelianNonMonomial.dedekind_modular",
+    "SemiabelianNonMonomial.semiabelian_pullback",
+    "SemiabelianNonMonomial.isSemiabelian_conjSubgroup",
+    "SemiabelianNonMonomial.conjugation_lemma",
+    "SemiabelianNonMonomial.not_kidaConjecture",
+    "SemiabelianNonMonomial.semiabelian_need_not_be_monomial",
+    "SemiabelianNonMonomial.counterexample_product"
+  ],
+  "definition_names": [
+    "SemiabelianNonMonomial.IsSemiabelianStep",
+    "SemiabelianNonMonomial.IsSemiabelian",
+    "SemiabelianNonMonomial.linearRepresentation",
+    "SemiabelianNonMonomial.ReprIso",
+    "SemiabelianNonMonomial.IsMonomialRepresentation",
+    "SemiabelianNonMonomial.IsMonomial",
+    "SemiabelianNonMonomial.KidaConjecture",
+    "SemiabelianNonMonomial.ExistsSemiabelianNonMonomial",
+    "SemiabelianNonMonomial.IsAbelianSubgroup",
+    "SemiabelianNonMonomial.IsModularGroup",
+    "SemiabelianNonMonomial.IsQuaternionGroup",
+    "SemiabelianNonMonomial.IsQuaternionFreeGroup",
+    "SemiabelianNonMonomial.Isoclinic",
+    "SemiabelianNonMonomial.conjSubgroup",
+    "SemiabelianNonMonomial.counterexampleRelators",
+    "SemiabelianNonMonomial.CounterexampleGroup"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ]
+}

@@ -1,0 +1,51 @@
+% \documentclass{article}
+% \usepackage{algorithm}
+% \usepackage{algpseudocode}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+
+% \begin{document}
+
+
+
+\begin{myalgorithm}[Recursive Semiabelian Test\label{alg:semiabelian-simple}]
+\begin{algorithmic}[1]
+
+\Function{IsSemiabelianGroup}{$G$}
+    \State {\small \textit{Memoized by \texttt{IdGroup}}}
+    \Statex \textit{// 1. Check base cases}
+    \State $n \gets |G|$
+    \If{$n = 1$ \textbf{or} \Call{IsAbelian}{$G$}}
+        \State \Return \textbf{true}
+    \EndIf
+    \If{$\neg$\Call{IsSolvable}{$G$}}
+        \State \Return \textbf{false}
+    \EndIf
+    \If{\Call{IsNilpotent}{$G$} \textbf{and} \Call{NilpotencyClass}{$G$} $\le 2$}
+        \State \Return \textbf{true}
+    \EndIf
+
+    \Statex
+    \Statex \textit{// 2. Check recursive definition: $G = A M$ with $M$ semiabelian}
+    \State $\Phi \gets$ \Call{FrattiniSubgroup}{$G$}
+    \State $\mathcal{A} \gets \{ N \trianglelefteq G \mid 1 < |N| < n \land \text{IsAbelian}(N) \land N \not\le \Phi \}$
+    \If{$\mathcal{A} = \emptyset$} \Return \textbf{false} \EndIf
+
+    % \State sort $\mathcal{A}$ by size descending
+    \State $\mathcal{M} \gets$ \Call{MaximalSubgroupClassReps}{$G$}
+    % \State sort $\mathcal{M}$ by size descending
+
+    \For{$A \in \mathcal{A}$}
+        \For{$M \in \mathcal{M}$}
+            \If{$|\langle A, M \rangle| = n$ \textbf{and} \Call{IsSemiabelianGroup}{$M$}}
+                \State \Return \textbf{true}
+            \EndIf
+        \EndFor
+    \EndFor
+    \State \Return \textbf{false}
+\EndFunction
+
+\end{algorithmic}
+\end{myalgorithm}
+
+% \end{document}

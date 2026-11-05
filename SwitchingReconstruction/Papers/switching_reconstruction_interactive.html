@@ -698,7 +698,7 @@ theorem switchingQuestion12 : SwitchingQuestion12 :=
 switching non-reconstructible oriented graph on `n ≥ 12` vertices —
 namely on `n = 12` vertices. This answers the Bondy–Mercier question
 (`SwitchingQuestion`) as posed in the paper. The stronger reading "for
-every `n ≥ 12`" is not in the paper; see `../../../GAPS.md`, G1. -/
+every `n ≥ 12`" is not in the paper. -/
 theorem exists_switching_nonreconstructible_ge_twelve : SwitchingQuestion :=
   ⟨12, le_refl 12, matD, matH, matD_isOrientedMat, matH_isOrientedMat,
     sameSwitchingDeck_matD_matH, matD_not_iso_matH⟩</code></pre>
@@ -718,7 +718,7 @@ theorem exists_switching_nonreconstructible_ge_twelve : SwitchingQuestion :=
 <h2 id="formalization">Lean formalization</h2>
 <div class="formal-note">
 <p>
-  The Lean library follows the paper in reading order and is rooted at <a href="Formalization/SwitchingReconstruction.lean">SwitchingReconstruction.lean</a>. Its finite matrix computations are checked by the Lean kernel. The formalization report is in <a href="Readme.md">Readme.md</a>; the natural-language audit is in <a href="PROOF_AUDIT.md">PROOF_AUDIT.md</a>; scope decisions and the paper's open questions are recorded in <a href="GAPS.md">GAPS.md</a>. The independent comparator challenge is <a href="Comparator/switching_reconstruction_comparator.lean">switching_reconstruction_comparator.lean</a>.
+  The Lean library follows the paper in reading order and is rooted at <a href="Formalization/SwitchingReconstruction.lean">SwitchingReconstruction.lean</a>. Its finite matrix computations are checked by the Lean kernel. The formalization report is in <a href="Readme.md">Readme.md</a>. The independent comparator challenge is <a href="Comparator/switching_reconstruction_comparator.lean">switching_reconstruction_comparator.lean</a>.
 </p>
 </div>
 

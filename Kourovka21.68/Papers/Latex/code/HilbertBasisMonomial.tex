@@ -1,0 +1,20 @@
+\begin{lstlisting}[language=GAP]
+HilbertBasisMonomial:=function(g)
+    local cc,i,x,y,z,o,l,j,t,a,s;
+    cc:=ConjugacyClassesSubgroups(g);
+    i:=Size(Irr(g)); t:=[];
+    for x in cc do
+        y:=Representative(x);
+        for z in LinearCharacters(y) do
+            o:=InducedClassFunction(z,g);
+            l:=[];
+            for j in [1..i] do
+                a:=ScalarProduct(Irr(g)[j],o);Add(l,a);
+                od;
+            Add(t,l);
+            od;
+        od;
+    s:=AffineSemigroup(t);
+    return(MinimalGenerators(s));
+end;;
+\end{lstlisting}

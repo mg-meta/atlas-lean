@@ -1,0 +1,401 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\datalist[entry]{anyt/global//global/global/global}
+  \entry{SmallGrp}{misc}{}{}
+    \name{author}{3}{}{%
+      {{hash=BHU}{%
+         family={Besche},
+         familyi={B\bibinitperiod},
+         given={H.\bibnamedelima U.},
+         giveni={H\bibinitperiod\bibinitdelim U\bibinitperiod},
+      }}%
+      {{hash=EB}{%
+         family={Eick},
+         familyi={E\bibinitperiod},
+         given={B.},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=OE}{%
+         family={O'Brien},
+         familyi={O\bibinitperiod},
+         given={E.},
+         giveni={E\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{BHUEBOE1}
+    \strng{fullhash}{BHUEBOE1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{BEO26}
+    \field{sortinit}{B}
+    \field{sortinithash}{B}
+    \field{howpublished}{\href {https://gap-packages.github.io/smallgrp/} {\texttt{https://gap\texttt{\symbol{45}}packages.github.io/}}}
+    \field{note}{GAP package}
+    \field{title}{{SmallGrp}, {The GAP Small Groups Library}, {V}ersion 1.7.0}
+    \field{year}{2026}
+  \endentry
+
+  \entry{bioch1978monomiality}{article}{}{}
+    \name{author}{2}{}{%
+      {{hash=BJC}{%
+         family={Bioch},
+         familyi={B\bibinitperiod},
+         given={J.\bibnamedelima C.},
+         giveni={J\bibinitperiod\bibinitdelim C\bibinitperiod},
+      }}%
+      {{hash=vdWRW}{%
+         prefix={van\bibnamedelima der},
+         prefixi={v\bibinitperiod\bibinitdelim d\bibinitperiod},
+         family={Waall},
+         familyi={W\bibinitperiod},
+         given={R.\bibnamedelima W.},
+         giveni={R\bibinitperiod\bibinitdelim W\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{BJCWRWvd1}
+    \strng{fullhash}{BJCWRWvd1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{BW78}
+    \field{sortinit}{B}
+    \field{sortinithash}{B}
+    \verb{doi}
+    \verb 10.1515/crll.1978.298.74
+    \endverb
+    \field{pages}{74\bibrangedash 88}
+    \field{title}{Monomiality and isoclinism of groups}
+    \field{volume}{298}
+    \field{journaltitle}{Journal f\"ur die reine und angewandte Mathematik}
+    \field{year}{1978}
+  \endentry
+
+  \entry{Dentzer95}{article}{}{}
+    \name{author}{1}{}{%
+      {{hash=DR}{%
+         family={Dentzer},
+         familyi={D\bibinitperiod},
+         given={Ralf},
+         giveni={R\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{DR1}
+    \strng{fullhash}{DR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Den95}
+    \field{sortinit}{D}
+    \field{sortinithash}{D}
+    \verb{doi}
+    \verb 10.1007/BF02567989
+    \endverb
+    \field{number}{2}
+    \field{pages}{199\bibrangedash 216}
+    \field{title}{On geometric embedding problems and semiabelian groups}
+    \field{volume}{86}
+    \field{journaltitle}{Manuscripta Mathematica}
+    \field{year}{1995}
+  \endentry
+
+  \entry{dornhoff1967mgroups}{article}{}{}
+    \name{author}{1}{}{%
+      {{hash=DL}{%
+         family={Dornhoff},
+         familyi={D\bibinitperiod},
+         given={Larry},
+         giveni={L\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{DL1}
+    \strng{fullhash}{DL1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Dor67}
+    \field{sortinit}{D}
+    \field{sortinithash}{D}
+    \verb{doi}
+    \verb 10.1007/BF01109806
+    \endverb
+    \field{pages}{226\bibrangedash 256}
+    \field{title}{\textit{M}-groups and 2-groups}
+    \field{volume}{100}
+    \field{journaltitle}{Mathematische Zeitschrift}
+    \field{year}{1967}
+  \endentry
+
+  \entry{GAP}{manual}{}{}
+    \list{organization}{1}{%
+      {The GAP~Group}%
+    }
+    \field{label}{GAP}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{GAP26}
+    \field{sortinit}{G}
+    \field{sortinithash}{G}
+    \field{title}{GAP -- Groups, Algorithms, and Programming, Version 4.16.1}
+    \verb{url}
+    \verb https://www.gap-system.org
+    \endverb
+    \field{year}{2026}
+  \endentry
+
+  \entry{Hall40}{article}{}{}
+    \name{author}{1}{}{%
+      {{hash=HP}{%
+         family={Hall},
+         familyi={H\bibinitperiod},
+         given={Philip},
+         giveni={P\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{HP1}
+    \strng{fullhash}{HP1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Hal40}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \verb{doi}
+    \verb 10.1515/crll.1940.182.130
+    \endverb
+    \field{pages}{130\bibrangedash 141}
+    \field{title}{The classification of prime-power groups}
+    \field{volume}{182}
+    \field{journaltitle}{Journal f\"ur die reine und angewandte Mathematik}
+    \field{year}{1940}
+  \endentry
+
+  \entry{Kida25}{article}{}{}
+    \name{author}{1}{}{%
+      {{hash=KM}{%
+         family={Kida},
+         familyi={K\bibinitperiod},
+         given={Masanari},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{KM1}
+    \strng{fullhash}{KM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Kid25}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \verb{doi}
+    \verb 10.1515/jgth-2024-0010
+    \endverb
+    \field{note}{Communicated by Bettina Eick}
+    \field{pages}{697\bibrangedash 712}
+    \field{title}{On semiabelian groups}
+    \field{volume}{28}
+    \field{journaltitle}{Journal of Group Theory}
+    \field{year}{2025}
+  \endentry
+
+  \entry{Legrand22}{article}{}{}
+    \name{author}{1}{}{%
+      {{hash=LF}{%
+         family={Legrand},
+         familyi={L\bibinitperiod},
+         given={Fran{\c{c}}ois},
+         giveni={F\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{LF1}
+    \strng{fullhash}{LF1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Leg22}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+    \verb{doi}
+    \verb 10.1016/j.jalgebra.2021.12.026
+    \endverb
+    \verb{eprint}
+    \verb 2112.12170
+    \endverb
+    \field{pages}{633\bibrangedash 659}
+    \field{title}{On finite embedding problems with abelian kernels}
+    \field{volume}{595}
+    \field{journaltitle}{Journal of Algebra}
+    \field{eprinttype}{arXiv}
+    \field{year}{2022}
+  \endentry
+
+  \entry{Matzat87}{article}{}{}
+    \name{author}{1}{}{%
+      {{hash=MBH}{%
+         family={Matzat},
+         familyi={M\bibinitperiod},
+         given={Bernd\bibnamedelima Heinrich},
+         giveni={B\bibinitperiod\bibinitdelim H\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Springer, Berlin, Heidelberg}%
+    }
+    \strng{namehash}{MBH1}
+    \strng{fullhash}{MBH1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Mat87}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \field{booktitle}{Konstruktive Galoistheorie}
+    \verb{doi}
+    \verb 10.1007/BFb0098329
+    \endverb
+    \field{isbn}{978-3-540-18444-7}
+    \field{pages}{215\bibrangedash 268}
+    \field{series}{Lecture Notes in Mathematics}
+    \field{title}{Einbettungsprobleme {\"U}ber {H}ilbertk\"orpern}
+    \field{volume}{1284}
+    \field{year}{1987}
+  \endentry
+
+  \entry{nilradical_v0_kourovka_21_68}{misc}{}{}
+    \name{author}{1}{}{%
+      {{hash=N}{%
+         family={{Nilradical}},
+         familyi={N\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{N1}
+    \strng{fullhash}{N1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{{Nil}26}
+    \field{sortinit}{N}
+    \field{sortinithash}{N}
+    \field{howpublished}{Mathematical result with Lean formalization}
+    \field{note}{Nilradical v0}
+    \field{title}{Nilradical v0: solution and Lean proof of Kourovka Problem 21.68}
+    \verb{url}
+    \verb https://github.com/alunik/kourovka-lean/blob/5a6b2c18e326b7b0281f00b6
+    \verb 4cade629acbfe1f5/Kourovka/Problems/P21_68/README.md
+    \endverb
+    \field{year}{2026}
+  \endentry
+
+  \entry{Saltman82}{article}{}{}
+    \name{author}{1}{}{%
+      {{hash=SDJ}{%
+         family={Saltman},
+         familyi={S\bibinitperiod},
+         given={D.\bibnamedelima J.},
+         giveni={D\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{SDJ1}
+    \strng{fullhash}{SDJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Sal82}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \verb{doi}
+    \verb 10.1016/0001-8708(82)90036-6
+    \endverb
+    \field{number}{3}
+    \field{pages}{250\bibrangedash 283}
+    \field{title}{Generic {G}alois extensions and problems in field theory}
+    \field{volume}{43}
+    \field{journaltitle}{Advances in Mathematics}
+    \field{year}{1982}
+  \endentry
+
+  \entry{Stoll95}{article}{}{}
+    \name{author}{1}{}{%
+      {{hash=SM}{%
+         family={Stoll},
+         familyi={S\bibinitperiod},
+         given={Michael},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{SM1}
+    \strng{fullhash}{SM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Sto95}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \verb{doi}
+    \verb 10.1017/S0017089500030433
+    \endverb
+    \field{number}{1}
+    \field{pages}{99\bibrangedash 104}
+    \field{title}{Construction of semiabelian {G}alois extensions}
+    \field{volume}{37}
+    \field{journaltitle}{Glasgow Mathematical Journal}
+    \field{year}{1995}
+  \endentry
+
+  \entry{Thompson84}{article}{}{}
+    \name{author}{1}{}{%
+      {{hash=TJG}{%
+         family={Thompson},
+         familyi={T\bibinitperiod},
+         given={J.\bibnamedelima G.},
+         giveni={J\bibinitperiod\bibinitdelim G\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{TJG1}
+    \strng{fullhash}{TJG1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Tho84}
+    \field{sortinit}{T}
+    \field{sortinithash}{T}
+    \verb{doi}
+    \verb 10.1016/0021-8693(84)90228-X
+    \endverb
+    \field{number}{2}
+    \field{pages}{437\bibrangedash 499}
+    \field{title}{Some finite groups which appear as $\mathrm{Gal}\, L/K$, where $K \subseteq \mathbf{Q}(\mu_n)$}
+    \field{volume}{89}
+    \field{journaltitle}{Journal of Algebra}
+    \field{year}{1984}
+  \endentry
+
+  \entry{vdWaall88}{article}{}{}
+    \name{author}{1}{}{%
+      {{hash=vdWRW}{%
+         prefix={van\bibnamedelima der},
+         prefixi={v\bibinitperiod\bibinitdelim d\bibinitperiod},
+         family={Waall},
+         familyi={W\bibinitperiod},
+         given={Robert\bibnamedelima W.},
+         giveni={R\bibinitperiod\bibinitdelim W\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{WRWvd1}
+    \strng{fullhash}{WRWvd1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Waa88}
+    \field{sortinit}{W}
+    \field{sortinithash}{W}
+    \field{pages}{149\bibrangedash 153}
+    \field{title}{Direct products and monomial characters}
+    \field{volume}{35}
+    \field{journaltitle}{Publicationes Mathematicae Debrecen}
+    \field{year}{1988}
+  \endentry
+\enddatalist
+\endinput

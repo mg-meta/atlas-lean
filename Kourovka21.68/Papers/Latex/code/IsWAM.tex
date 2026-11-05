@@ -1,0 +1,27 @@
+\begin{lstlisting}[language=GAP]
+IsWAM:=function(g)
+    local cc,i,M,x,y,z,k,j,o,l,num;
+    if IsMonomial(g) then return(true);fi;
+    cc:=ConjugacyClassesSubgroups(g);
+    i:=Size(Irr(g));
+    M:=IdentityMat(i);
+    num:=i*(i-1);
+    for x in cc do
+        y:=Representative(x);
+        for z in LinearCharacters(y) do
+            o:=InducedClassFunction(z,g);
+            for j in [1..i] do 
+                for k in [1..i] do
+                    if M[j][k]=0 then
+                        if ScalarProduct(o,Irr(g)[j]) > ScalarProduct(o,Irr(g)[k]) then
+                            M[j][k]:=1;num:=num-1;
+                        if num=0 then return(true);fi;
+                        fi;
+                    fi; 
+                od;
+            od; 
+        od; 
+    od;
+    return(false);
+end;;
+\end{lstlisting}

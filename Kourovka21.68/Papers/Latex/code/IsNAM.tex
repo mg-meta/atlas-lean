@@ -1,0 +1,52 @@
+\begin{lstlisting}[language=GAP]
+# IsNAM - Nicolae Almost Monomial (called IsAlmostMonomial in older papers)
+# G is NAM iff for all i<>j there is H<=G and linear lambda in Irr(H)
+# with InducedClassFunction(lambda,G) containing chi_i but not chi_j
+IsNAM := function(G)
+  local irr, r, need, mat, classes, H, lin, ind, mult, has, i, j, k;
+
+  if IsMonomialGroup(G) then
+    return true;
+  fi;
+
+  irr := Irr(G);
+  r := Length(irr);
+
+  # mat[i][j] = true if pair (i,j) already separated, i<>j
+  mat := List([1..r], i -> List([1..r], j -> i=j));
+  need := r*(r-1);
+
+  classes := List(ConjugacyClassesSubgroups(G), Representative);
+
+  for H in classes do
+    # LinearCharacters(H) = Filtered(Irr(H), c -> Degree(c)=1)
+    for lin in LinearCharacters(H) do
+      ind := InducedClassFunction(lin, G);
+      # cache all scalar products once
+      mult := List(irr, chi -> ScalarProduct(ind, chi));
+      has := List(mult, m -> m > 0);
+
+      for i in [1..r] do
+        if not has[i] then continue; fi;
+        for j in [1..r] do
+          if i=j then continue; fi;
+          if not mat[i][j] and not has[j] then
+            # NAM condition: chi_i in Cons(ind), chi_j not in Cons(ind)
+            mat[i][j] := true;
+            need := need - 1;
+            if need = 0 then
+              return true;
+            fi;
+          fi;
+        od;
+      od;
+    od;
+  od;
+
+  return false;
+end;
+
+# optional aliases
+IsAlmostMonomial := IsNAM;
+IsNAMGroup := IsNAM;
+\end{lstlisting}

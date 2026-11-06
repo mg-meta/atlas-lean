@@ -1,4 +1,7 @@
 \documentclass[11pt]{article}
+% ===================================================================
+% 1. Packages (before flexart)
+% ===================================================================
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{amssymb, amsmath, amsthm}
@@ -47,18 +50,51 @@
 % ===================================================================
 \input{stylelibrary.tex}
 
-% Minimal differences: modest front-matter tightening only.
+% Compact Note overrides: package files and paper content are unchanged.
 \flexset{
-  margintop = 0.5in,
-  marginbottom = 0.5in,
-  marginleft = 0.7in,
-  marginright = 0.7in,
   parindent = 1.5em,
+  abovesubtitle = 0em,
+  belowsubtitle = 0.35em,
+  belowmaketitle = 0.4em,
+  thmdefinitionheadfont = {\normalfont\bfseries},
+  thmremarkheadfont = {\normalfont\bfseries},
+  thmremarkindent = 0pt,
+  thmplainabove = 0.6em,  % paper's own theorem spacing, carried over
+  thmdefinitionabove = 0.6em,
+  thmplainbelow = 0em,
+  thmdefinitionbelow = 0em,
+  proofabove = 0em,
+  partpagebreak = false,
+  parskip = 0.45em plus 0.1em,
   abovetitle = 0pt,
-  belowtitle = 1.2em,
-  aboveabstract = 1.5em,
-  abovesecondary = 16.13pt,
-  thmdefinitionheadfont = {\normalfont\scshape}
+  belowtitle = 1em,  % Note 3 title style
+  titleleading = 20.7pt,  % matches the \Large (17.28pt) title
+  titlefont = {\Large\bfseries\spaceskip1.3\fontdimen2\font plus1.3\fontdimen3\font\relax},  % one step bigger than flexart's \large (12pt) title
+  titlealign = {\raggedright},  % Note 3 title style
+  authoralign = {\raggedright},  % Note 3 front-matter style
+  sectionalign = {\raggedright},  % left-aligned bold section titles
+  sectionfont = {\normalfont\large\bfseries},  % left-aligned bold section titles
+  sectionnumberfont = {\bfseries},  % number bold too
+  appendixalign = {\raggedright},  % appendix heading matches the sections
+  appendixfont = {\normalfont\large\bfseries},  % appendix heading matches the sections
+  appendixnumberfont = {\bfseries},
+  subtitlealign = {\raggedright},  % Note 3 title style
+  abovesecondary = 5pt,  % Note 3 front-matter style
+  inlineauthorgrouplabels = true,  % Note 3 front-matter style: "Label content"
+  combineauthorgroups = false,
+  aboveprimary = 0.3em,  % Note 3 front-matter style
+  % No flexabstract / keywords in this variant: the summary is a
+  % scshape `Summary.' label opening the body text.
+  belowprimary = 0.3em,  % Note 3 front-matter style
+  belowsecondary = 0.3em,  % Note 3 front-matter style (below the last author group)
+  betweenauthorgroups = 2pt,  % Note 3 front-matter style
+  showretrievedlabel = false,
+  sectionabove = 0.5\baselineskip plus 0.25\baselineskip,
+  sectionbelow = 0.3\baselineskip,
+  subsectionabove = 0.3\baselineskip,
+  subsubsectionabove = 0.3\baselineskip,
+  appendixabove = 0.5\baselineskip plus 0.25\baselineskip,
+  appendixbelow = 0.3\baselineskip
 }
 
 % ===================================================================
@@ -67,21 +103,22 @@
 \definecolor{aicolor}{HTML}{038DFC}
 \definecolor{editedaicolor}{HTML}{2B65C6}
 \definecolor{humancolor}{HTML}{22AA22}
+\definecolor{humanaicolor}{HTML}{5700FF}
 \definecolor{aiassistedcolor}{HTML}{003300}
 \definecolor{defaultcolback}{HTML}{FFFFFF}
 \definecolor{othercolor}{HTML}{7A3E9D}
-\definecolor{collabcolor}{HTML}{129B8F}
 \renewcommand{\opacityFrame}{0.5}
 \renewcommand{\opacityText}{0.7}
 
 \newcommand{\HumanLabel}{
 ({\bfseries\sffamily\color{humancolor!70}Human})
 }
+\newcommand{\HumanAILabel}{
+({\bfseries\sffamily\color{humanaicolor!70}Human + AI})
+}
 \newcommand{\AILabel}{
 ({\bfseries\sffamily\color{aicolor!70}AI})
 }
-\newcommand{\CollabLabel}{%
-\textcolor{collabcolor}{(Human + AI)}}
 \newcommand{\EditedAILabel}{
 ({\bfseries\sffamily\color{editedaicolor!70}Edited AI})
 }
@@ -92,25 +129,15 @@
 ({\bfseries\sffamily\color{othercolor!70}Other})
 }
 
-% Human + AI sidebar, as in Ruel_Anderson_Second_Derivatve.tex and
-% Uniform_Real_Zero_Bounds_Constant.tex (Temp_Packages): same
-% linemargin/enhancebreak mechanism as humanblock in stylelibrary.tex,
-% teal frame with vertical "Human + AI" label.
-\newtcolorbox{collabblock}[1][]{
-    colframe=collabcolor, opacityframe=\opacityFrame,
-    enhancebreak, alignoptions, linemargin,
-    colback=white,
-    overlay={
-    \node[
-    collabcolor, font=\tiny\bfseries\sffamily,
-    rotate=90, anchor=east, align=right,
-    text opacity=\opacityText
-      ]
-      at ([xshift=-\marginsep-\framelinewidth/2,
-      yshift=3pt]frame.north west) {Human + AI};
-    }, footnoteformat,
-    #1
+% Synchronize compact paragraph spacing inside and outside provenance boxes.
+\AtBeginDocument{%
+  \setlength{\defparindent}{\parindent}%
+  \setlength{\boxparskip}{\parskip}%
 }
+\tcbset{linemargin/.append style={
+  before skip=0.3\baselineskip,
+  after skip=0.3\baselineskip
+}}
 
 % No zero-length \vspace* placeholder above the title block.
 \makeatletter
@@ -128,6 +155,12 @@
 % Centers of header/folio glyph boxes sit halfway through 0.5in margins.
 \flexset{header=false,headersep=15.53pt}
 \setlength{\footskip}{20.65pt}
+
+% ===================================================================
+% 4. hyperref (last)
+% ===================================================================
+\usepackage{hyperref}
+
 
 % Custom packages
 
@@ -191,35 +224,19 @@
 
 
 \date{October 2026}
-
 % ===================================================================
 % Front matter
 % ===================================================================
-\title{Switching reconstruction of oriented graphs}
+\title[Short Title for the Running Head]{Switching reconstruction of oriented graphs}
 % Optional subtitle -- uncomment to use it:
 % \subtitle{An Optional Subtitle}
 
-% Declare each note once with \newfanote; mark authors with \fanote.
-% Keep \fanote outside the {\scshape ...} group.
-%\newfanote{corr}{Corresponding author: \href{mailto:first.author@example.edu}{first.author@example.edu}.}
-%\newfanote{orch}{Orchestrating author.}
-%\newfanote{rev}{Reviewer.}
-\newcommand{\withModel}{\footnotesize with {Muse Spark} and {Watermelon} via {\ttfamily \href{http://meta.ai}{meta.ai}}--TBD}
-\primaryauthors{%
-  {\scshape Milana Golich}%\fanote{corr}
-  %\and 
-  \\
-  %{\scshape Second Author}\\
-  \withModel
-}
-% Secondary authors: two labeled subgroups (see README.md).
-\secondaryauthors{%
-  {\normalfont\footnotesize\itshape Orchestrators}\\*
-  {\scshape Charles Arnal, Vivien Cabannes}\fanote{orch}\\[7.65pt]
-  {\normalfont\footnotesize\itshape Reviewed by}\\*
-  {\scshape }\fanote{rev}
-  %\and
-  {\scshape }\fanote{rev}%
+\newcommand{\withModel}{\hspace*{1.5em}\footnotesize with {Muse Wonder} via Custom Scaffold}
+\primaryauthors{{\scshape Milana Golich} %\and {\scshape Second Author}
+\\ \withModel}
+\orchestrator{{\scshape  Charles Arnal, Vivien Cabannes}}
+\secondaryauthorlabel{Reviewed by}
+\secondaryauthors{{\scshape } %\and {\scshape }
 }
 
 % No \affiliation or \date (see README.md).
@@ -232,15 +249,17 @@
 %\subjclass[2020]{20D10, 20C15}
 % \affiliation{Department of Typographic Engineering, Example University}
 % \keywords{LaTeX, front matter, sectioning, regression test}
-\flexabstract{%
-We prove the existence of a switching, non-reconstructible digraph on $n \geq 12$ vertices.
-We remark on the use of AI in this research, see Statement of AI Use.
-}
+
 
 
 \begin{document}
 
 \maketitle
+
+% Summary is a scshape run-in label opening the body text, not a section.
+\noindent{\normalfont\scshape Summary.}
+We prove the existence of a switching, non-reconstructible digraph on $n \geq 12$ vertices.
+We remark on the use of AI in this research, see Statement of AI Use.
 
 \section{Introduction}
 \begin{humanblock}
@@ -252,14 +271,14 @@ A natural question to ask is to what extent a mathematical object can be recover
 
 Similar reconstruction questions to that of Kelly and Ulam were asked for various other kinds of decks. For example, Stanley \cite{Stanley1985} asked an analagous question for graphs with decks that are obtained from a 'switching'. Here Stanley defined the switching of a graph about a vertex to be the switching of edges incident with a vertex into non-edges, and vice-versa. Bondy and Mercier \cite{BondyMercier2011} continued to ask switching reconstruction problems in the setting of directed graphs, or digraphs. The switching in this context refers to switching the orientation of the directed edges incident with a vertex. In \cite{BondyMercier2011}, the authors proved the existence of large sets of digraphs on 4 and 8 vertices that were switching, non-reconstructible. In fact, it was shown that any switching, non-reconstructible digraph must have order divisible by 4, but there were no known examples with $n \geq 12$ vertices. In this exposition, we present an example for $n=12$. We also refer the reader to \cite{McKaySchweitzer2014} for additional background on this topic. 
 
-\section*{Statement of AI Use}
-
-This paper was developed through collaboration between researchers and Watermelon and Muse Spark (AI models) via the \href{http://meta.ai}{meta.ai} chat interface. The model helped explore ideas, develop candidate arguments, and draft material. Researchers guided the work, checked and corrected the mathematics, and take ownership for the final manuscript. Following \cite{schmitt2025extremal}, margin markers identify human-drafted \!\!\HumanLabel, joint \!\!\CollabLabel, and AI-assisted material \!\!\AILabel separately.
+\subsection*{Statement of AI Use}
+This paper was developed through collaboration between researchers and Muse Wonder via Custom Scaffold. The model helped explore ideas, develop candidate arguments, and draft material. Researchers guided the work, checked and corrected the mathematics, and take ownership for the final manuscript. Margin markers identify primarily human \!\!\HumanLabel\!\! %, primarily AI \!\!\AILabel\!\!, 
+and highly collaborative\HumanAILabel\!\! material.
 \end{humanblock}
 
 
 \section{Problem Statement}
-\begin{collabblock}
+\begin{humanaiblock}
 For a digraph $D$ and a vertex $v$, we define $\mathrm{switch}(D,v)$ to be the graph obtained by the $\textbf{switching in $D$ about $v$}$ where every edge incident with $v$ is reversed and all other edges remain unchanged. A pair of digraphs $D$ and $H$ have the same switching deck if there exists a bijection $\pi: V(D) \to V(H)$ such that $\mathrm{switch}(D,v) \cong \mathrm{switch}(H,\pi(v))$ for every $v$. We say that a digraph $D$ is \textbf{non-reconstructible} if there exists a digraph $H$, not isomorphic to $D$, that has the same switching deck as $D$.
 
 The following question was posed in \cite{BondyMercier2011}: 
@@ -460,9 +479,9 @@ For example, we derive the $P_H(2)$ above since vertex $2$ in $H$ has out-neighb
 \subsection*{CONCLUSION}
 We have shown the existence of a pair of oriented graphs $D$ and $H$ with $n=12$ vertices that have the same switching deck, but
 are not isomorphic. This proves the existence of switching, non-reconstructible oriented graphs on twelve vertices.
-\end{collabblock}
+\end{humanaiblock}
 
-\section*{FURTHER QUESTIONS}
+\section*{Discussion}
 
 \begin{humanblock}
 To motivate further study on this topic, we conclude with the following questions of interest:
